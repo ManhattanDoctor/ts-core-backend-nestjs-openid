@@ -1,0 +1,37 @@
+{
+    "name": "@ts-core/backend-nestjs-openid",
+    "version": "9.0.0",
+    "description": "Classes for NestJS OpenId",
+    "scripts": {},
+    "author": {
+        "name": "Renat Gubaev",
+        "email": "renat.gubaev@gmail.com"
+    },
+    "main": "./cjs/public-api.js",
+    "module": "./esm/public-api.js",
+    "exports": {
+        ".": {
+            "import": "./esm/public-api.js",
+            "require": "./cjs/public-api.js"
+        }
+    },
+    "license": "ISC",
+    "dependencies": {
+        "@nestjs/swagger": "^6.3.0",
+        "@ts-core/backend-nestjs": "~9.0.4"
+    },
+    "devDependencies": {
+        "gulp-npm-module-publisher": "^3.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ManhattanDoctor/backend-nestjs-openid.git"
+    },
+    "keywords": [
+        "typescript"
+    ],
+    "bugs": {
+        "url": "https://github.com/ManhattanDoctor/backend-nestjs-openid/issues"
+    },
+    "homepage": "https://github.com/ManhattanDoctor/backend-nestjs-openid#readme"
+}
