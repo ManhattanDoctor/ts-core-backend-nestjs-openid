@@ -6,4 +6,6 @@ export interface IJwtUser {
     familyName: string;
     emailVerified: boolean;
     preferredUsername: string;
+
+    [key: string]: any;
 }

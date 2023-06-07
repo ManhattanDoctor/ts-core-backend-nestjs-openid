@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import { DateUtil, ObjectUtil, TransformUtil } from '@ts-core/common';
 import { IJwtUser } from '../../lib';
 import { TokenInvalidError } from '../../error';
+import { KeycloakUtil } from './KeycloakUtil';
 
 export class KeycloakToken {
     // --------------------------------------------------------------------------
@@ -64,7 +65,7 @@ export class KeycloakToken {
     }
 
     public getUserInfo(): IJwtUser {
-        return ObjectUtil.copyProperties(this.content, {}, ['sub', 'name', 'email', 'given_name', 'family_name', 'email_verified', 'preferred_username']);
+        return KeycloakUtil.toCamelCase(ObjectUtil.copyProperties(this.content, {}));
     }
 
     public hasClientRole(name: string): boolean {

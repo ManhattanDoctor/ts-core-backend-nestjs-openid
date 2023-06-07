@@ -37,7 +37,7 @@ export class KeycloakUtil {
     }
 
     public static async getUserInfo(token: string): Promise<IJwtUser> {
-        return KeycloakUtil.toCamelCase(new KeycloakToken(token).getUserInfo());
+        return new KeycloakToken(token).getUserInfo();
     }
 
     // --------------------------------------------------------------------------
