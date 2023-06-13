@@ -102,7 +102,7 @@ export class KeycloakClient {
     // --------------------------------------------------------------------------
 
     public async getUserInfo(): Promise<IJwtUser> {
-        // KeycloakUtil.toCamelCase(await this.get(`userinfo`, null, { 'Authorization': `Bearer ${this.token}` }));
+        // return this.get(`userinfo`, null, { 'Authorization': `Bearer ${this.token}` });
         return KeycloakUtil.getUserInfo(this.token);
     }
 
@@ -114,7 +114,7 @@ export class KeycloakClient {
             redirect_uri: code.redirectUri,
             client_secret: this.settings.clientSecret,
         };
-        return KeycloakUtil.toCamelCase<IJwtToken>(await this.post('token', data));
+        return this.post<IJwtToken>('token', data);
     }
 
     public async validateToken(options?: IJwtOfflineValidationOptions): Promise<void> {

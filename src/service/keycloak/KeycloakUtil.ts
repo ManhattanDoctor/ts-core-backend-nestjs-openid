@@ -32,9 +32,11 @@ export class KeycloakUtil {
         return array.length > 1 ? { type: array[0], role: array[1] } : { type: KeycloakRole.CLIENT, role: array[0] };
     }
 
+    /*
     public static toCamelCase<T>(item: any): T {
         return _.mapKeys(item, (value, key) => _.camelCase(key)) as T;
     }
+    */
 
     public static async getUserInfo(token: string): Promise<IJwtUser> {
         return new KeycloakToken(token).getUserInfo();

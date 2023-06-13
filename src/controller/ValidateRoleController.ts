@@ -18,7 +18,7 @@ export class JwtRoleValidationOptions implements IJwtRoleValidationOptions {
     @ApiPropertyOptional()
     @IsOptional()
     @IsBoolean()
-    isAny: boolean;
+    isAny?: boolean;
 
     @ApiProperty()
     @IsDefined()

@@ -65,7 +65,7 @@ export class KeycloakToken {
     }
 
     public getUserInfo(): IJwtUser {
-        return KeycloakUtil.toCamelCase(ObjectUtil.copyProperties(this.content, {}));
+        return ObjectUtil.copyProperties(this.content, {});
     }
 
     public hasClientRole(name: string): boolean {
