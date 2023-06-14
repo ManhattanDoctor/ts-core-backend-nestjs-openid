@@ -7,6 +7,7 @@ import { JwtBearer, JwtPublic } from '../decorator';
 import { VALIDATE_ROLE } from '../service/proxy';
 import { IJwtRoleValidationOptions, OpenIdService } from '../service';
 import * as _ from 'lodash';
+import { IJwtUser } from '../lib';
 
 // --------------------------------------------------------------------------
 //
@@ -50,7 +51,7 @@ export class ValidateRoleController {
     @Post()
     @JwtPublic(false)
     @UseGuards(JwtGuard)
-    public async execute(@Body() options: JwtRoleValidationOptions, @JwtBearer() bearer: IJwtBearer): Promise<void> {
+    public async execute<T extends IJwtUser>(@Body() options: JwtRoleValidationOptions, @JwtBearer() bearer: IJwtBearer<T>): Promise<void> {
         return this.openid.validateRole(bearer.token, options);
     }
 }

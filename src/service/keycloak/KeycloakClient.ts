@@ -101,12 +101,12 @@ export class KeycloakClient {
     //
     // --------------------------------------------------------------------------
 
-    public async getUserInfo(): Promise<IJwtUser> {
+    public async getUserInfo<T extends IJwtUser>(): Promise<T> {
         // return this.get(`userinfo`, null, { 'Authorization': `Bearer ${this.token}` });
-        return KeycloakUtil.getUserInfo(this.token);
+        return KeycloakUtil.getUserInfo<T>(this.token);
     }
 
-    public async getTokenByCode(code: IJwtCode): Promise<IJwtToken> {
+    public async getTokenByCode<T extends IJwtToken>(code: IJwtCode): Promise<T> {
         let data = {
             code: code.code,
             client_id: this.settings.clientId,
@@ -114,7 +114,7 @@ export class KeycloakClient {
             redirect_uri: code.redirectUri,
             client_secret: this.settings.clientSecret,
         };
-        return this.post<IJwtToken>('token', data);
+        return this.post<T>('token', data);
     }
 
     public async validateToken(options?: IJwtOfflineValidationOptions): Promise<void> {

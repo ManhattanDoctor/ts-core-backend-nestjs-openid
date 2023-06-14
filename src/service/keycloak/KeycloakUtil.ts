@@ -38,8 +38,8 @@ export class KeycloakUtil {
     }
     */
 
-    public static async getUserInfo(token: string): Promise<IJwtUser> {
-        return new KeycloakToken(token).getUserInfo();
+    public static async getUserInfo<T extends IJwtUser>(token: string): Promise<T> {
+        return new KeycloakToken(token).getUserInfo<T>();
     }
 
     // --------------------------------------------------------------------------

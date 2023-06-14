@@ -33,7 +33,7 @@ export class KeycloakService extends OpenIdService {
     //
     // --------------------------------------------------------------------------
 
-    public async getTokenByCode(code: IJwtCode): Promise<IJwtToken> {
+    public async getTokenByCode<T extends IJwtToken>(code: IJwtCode): Promise<T> {
         return this.client(null).getTokenByCode(code);
     }
 
@@ -63,8 +63,8 @@ export class KeycloakService extends OpenIdService {
     //
     // --------------------------------------------------------------------------
 
-    public async getUserInfo(token: string): Promise<IJwtUser> {
-        return this.client(token).getUserInfo();
+    public async getUserInfo<T extends IJwtUser>(token: string): Promise<T> {
+        return this.client(token).getUserInfo<T>();
     }
 
     public async validateToken(token: string, options?: IJwtOfflineValidationOptions): Promise<void> {

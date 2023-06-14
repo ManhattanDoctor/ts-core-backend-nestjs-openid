@@ -1,6 +1,6 @@
 import { IJwtUser } from "../lib";
 
-export interface IJwtBearer {
-    user?: IJwtUser;
+export interface IJwtBearer<T extends IJwtUser = IJwtUser> {
+    user?: T;
     token: string;
 }

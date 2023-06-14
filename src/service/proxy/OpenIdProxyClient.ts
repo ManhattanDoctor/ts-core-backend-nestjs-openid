@@ -1,4 +1,4 @@
-import { ExtendedError, isAxiosError, parseAxiosError } from '@ts-core/common';
+import { isAxiosError, parseAxiosError } from '@ts-core/common';
 import { IJwtCode, IJwtToken, IJwtUser } from '../../lib';
 import { IJwtOfflineValidationOptions, IJwtResourceValidationOptions, IJwtRoleValidationOptions } from '../IJwtOptions';
 import axios from 'axios';
@@ -55,12 +55,12 @@ export class OpenIdProxyClient {
     //
     // --------------------------------------------------------------------------
 
-    public async getUserInfo(): Promise<IJwtUser> {
-        return this.get<IJwtUser>(GET_USER_INFO);
+    public async getUserInfo<T extends IJwtUser>(): Promise<T> {
+        return this.get<T>(GET_USER_INFO);
     }
 
-    public async getTokenByCode(code: IJwtCode): Promise<IJwtToken> {
-        return this.post<IJwtToken>(GET_TOKEN_BY_CODE, code);
+    public async getTokenByCode<T extends IJwtToken>(code: IJwtCode): Promise<T> {
+        return this.post<T>(GET_TOKEN_BY_CODE, code);
     }
 
     public async validateToken(options?: IJwtOfflineValidationOptions): Promise<void> {

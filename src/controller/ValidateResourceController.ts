@@ -7,6 +7,7 @@ import { JwtBearer, JwtPublic } from '../decorator';
 import { VALIDATE_RESOURCE } from '../service/proxy';
 import { IJwtResourceValidationOptions, OpenIdService } from '../service';
 import * as _ from 'lodash';
+import { IJwtUser } from '../lib';
 
 // --------------------------------------------------------------------------
 //
@@ -54,7 +55,7 @@ export class ValidateResourceController {
     @Post()
     @JwtPublic(false)
     @UseGuards(JwtGuard)
-    public async execute(@Body() options: JwtResourceValidationOptions, @JwtBearer() bearer: IJwtBearer): Promise<void> {
+    public async execute<T extends IJwtUser>(@Body() options: JwtResourceValidationOptions, @JwtBearer() bearer: IJwtBearer<T>): Promise<void> {
         return this.openid.validateResource(bearer.token, options);
     }
 }

@@ -2,7 +2,6 @@ import * as _ from 'lodash';
 import { DateUtil, ObjectUtil, TransformUtil } from '@ts-core/common';
 import { IJwtUser } from '../../lib';
 import { TokenInvalidError } from '../../error';
-import { KeycloakUtil } from './KeycloakUtil';
 
 export class KeycloakToken {
     // --------------------------------------------------------------------------
@@ -64,7 +63,7 @@ export class KeycloakToken {
         return this.content.exp * DateUtil.MILLISECONDS_SECOND < Date.now();
     }
 
-    public getUserInfo(): IJwtUser {
+    public getUserInfo<T extends IJwtUser>(): T {
         return ObjectUtil.copyProperties(this.content, {});
     }
 

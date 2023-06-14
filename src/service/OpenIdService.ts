@@ -8,9 +8,9 @@ export abstract class OpenIdService {
     //
     // --------------------------------------------------------------------------
 
-    abstract getUserInfo(token: string): Promise<IJwtUser>;
+    abstract getUserInfo<T extends IJwtUser>(token: string): Promise<T>;
 
-    abstract getTokenByCode(code: IJwtCode): Promise<IJwtToken>;
+    abstract getTokenByCode<T extends IJwtToken>(code: IJwtCode): Promise<T>;
 
     abstract hasRole(token: string, permission: IJwtRolePermissionOptions): Promise<boolean>;
 

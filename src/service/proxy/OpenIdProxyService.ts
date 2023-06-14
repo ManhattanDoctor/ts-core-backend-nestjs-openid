@@ -1,5 +1,4 @@
 import { OpenIdService } from '../OpenIdService';
-import { ILogger } from '@ts-core/common';
 import { IJwtCode, IJwtToken, IJwtUser } from '../../lib';
 import { IJwtOfflineValidationOptions, IJwtResourceScopePermissionOptions, IJwtResourceValidationOptions, IJwtRolePermissionOptions, IJwtRoleValidationOptions } from '../IJwtOptions';
 import * as _ from 'lodash';
@@ -32,7 +31,7 @@ export class OpenIdProxyService extends OpenIdService {
     //
     // --------------------------------------------------------------------------
 
-    public async getTokenByCode(code: IJwtCode): Promise<IJwtToken> {
+    public async getTokenByCode<T extends IJwtToken>(code: IJwtCode): Promise<T> {
         return this.client(null).getTokenByCode(code);
     }
 
@@ -62,7 +61,7 @@ export class OpenIdProxyService extends OpenIdService {
     //
     // --------------------------------------------------------------------------
 
-    public async getUserInfo(token: string): Promise<IJwtUser> {
+    public async getUserInfo<T extends IJwtUser>(token: string): Promise<T> {
         return this.client(token).getUserInfo();
     }
 

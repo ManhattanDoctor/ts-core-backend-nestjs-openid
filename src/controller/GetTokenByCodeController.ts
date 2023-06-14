@@ -45,7 +45,7 @@ export class GetTokenByCodeController {
     // --------------------------------------------------------------------------
 
     @Post()
-    public async execute(@Body() params: JwtCode): Promise<IJwtToken> {
-        return this.openid.getTokenByCode(params);
+    public async execute<T extends IJwtToken>(@Body() params: JwtCode): Promise<T> {
+        return this.openid.getTokenByCode<T>(params);
     }
 }

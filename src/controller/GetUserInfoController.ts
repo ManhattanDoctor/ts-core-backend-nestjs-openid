@@ -31,7 +31,7 @@ export class GetUserInfoController {
     @Get()
     @JwtPublic(false)
     @UseGuards(JwtGuard)
-    public async execute(@JwtBearer() bearer: IJwtBearer): Promise<IJwtUser> {
-        return this.openid.getUserInfo(bearer.token);
+    public async execute<T extends IJwtUser>(@JwtBearer() bearer: IJwtBearer<T>): Promise<T> {
+        return this.openid.getUserInfo<T>(bearer.token);
     }
 }
