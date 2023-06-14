@@ -1,4 +1,4 @@
-import { DynamicModule, Provider } from '@nestjs/common';
+import { DynamicModule, Type, Provider } from '@nestjs/common';
 import { ExtendedError } from '@ts-core/common';
 import { OpenIdService } from './service';
 import { IKeycloakSettings, KeycloakService } from './service/keycloak';
@@ -14,9 +14,9 @@ export class OpenIdModule {
     // --------------------------------------------------------------------------
 
     public static forServer(settings: IOpenIdModuleSettings): DynamicModule {
-        let providers: Array<Provider> = [
-            JwtGuard
-        ];
+        let providers: Array<Provider> = [JwtGuard];
+        let controllers: Array<Type> = settings.isNeedControllers ? [GetTokenByCodeController, GetUserInfoController, ValidateTokenController, ValidateResourceController, ValidateRoleController] : [];
+
         switch (settings.type) {
             case OpenIdType.KEYCLOAK:
                 providers.push({
@@ -29,9 +29,9 @@ export class OpenIdModule {
         }
         return {
             global: true,
-            controllers: [GetTokenByCodeController, GetUserInfoController, ValidateTokenController, ValidateResourceController, ValidateRoleController],
             module: OpenIdModule,
             exports: providers,
+            controllers,
             providers,
         };
     }
@@ -65,7 +65,8 @@ export enum OpenIdType {
 
 export interface IOpenIdModuleSettings {
     type: OpenIdType;
-    settings?: IKeycloakSettings | IIpGatewaySettings;
+    settings: IKeycloakSettings | IIpGatewaySettings;
+    isNeedControllers?: boolean;
 }
 
 export interface IIpGatewaySettings { }
