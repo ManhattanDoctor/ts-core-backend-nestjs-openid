@@ -45,7 +45,7 @@ export class JwtGuard implements CanActivate {
     }
 
     protected async validateResource(context: ExecutionContext, token: string): Promise<void> {
-        let name = this.reflector.get<string>(JwtGuard.META_RESOURCE, context.getClass());
+        let name = this.reflector.getAllAndOverride<string>(JwtGuard.META_RESOURCE, [context.getClass(), context.getHandler()]);
         if (_.isNil(name)) {
             return;
         }
