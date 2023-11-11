@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/backend-nestjs-openid",
-    "version": "9.0.5",
+    "version": "10.0.0",
     "description": "Classes for NestJS OpenId",
     "scripts": {},
     "author": {
@@ -17,8 +17,8 @@
     },
     "license": "ISC",
     "dependencies": {
-        "@nestjs/swagger": "^6.3.0",
-        "@ts-core/backend-nestjs": "~9.0.4"
+        "@nestjs/swagger": "^7.1.15",
+        "@ts-core/backend-nestjs": "~10.0.0"
     },
     "devDependencies": {
         "gulp-npm-module-publisher": "^3.0.0"
