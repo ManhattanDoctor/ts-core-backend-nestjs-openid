@@ -25,13 +25,13 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ManhattanDoctor/backend-nestjs-openid.git"
+        "url": "git+https://github.com/ManhattanDoctor/ts-core-backend-nestjs-openid.git"
     },
     "keywords": [
         "typescript"
     ],
     "bugs": {
-        "url": "https://github.com/ManhattanDoctor/backend-nestjs-openid/issues"
+        "url": "https://github.com/ManhattanDoctor/ts-core-backend-nestjs-openid/issues"
     },
-    "homepage": "https://github.com/ManhattanDoctor/backend-nestjs-openid#readme"
+    "homepage": "https://github.com/ManhattanDoctor/ts-core-backend-nestjs-openid#readme"
 }
