@@ -18,10 +18,10 @@
     "license": "ISC",
     "dependencies": {
         "@nestjs/swagger": "^7.1.15",
-        "@ts-core/backend-nestjs": "~10.0.0"
+        "@ts-core/backend-nestjs": "~10.0.6"
     },
     "devDependencies": {
-        "gulp-npm-module-publisher": "^3.0.0"
+        "gulp-npm-module-publisher": "^3.0.5"
     },
     "repository": {
         "type": "git",

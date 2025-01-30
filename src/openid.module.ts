@@ -59,14 +59,11 @@ export class OpenIdModule {
 }
 
 export enum OpenIdType {
-    KEYCLOAK = 'KEYCLOAK',
-    IP_GATEWAY = 'IP_GATEWAY'
+    KEYCLOAK = 'KEYCLOAK'
 }
 
 export interface IOpenIdModuleSettings {
     type: OpenIdType;
-    settings: IKeycloakSettings | IIpGatewaySettings;
+    settings: IKeycloakSettings;
     isNeedControllers?: boolean;
 }
-
-export interface IIpGatewaySettings { }

@@ -1,8 +1,8 @@
 import { OpenIdService } from '../OpenIdService';
 import { IJwtCode, IJwtToken, IJwtUser } from '../../lib';
 import { IJwtOfflineValidationOptions, IJwtResourceScopePermissionOptions, IJwtResourceValidationOptions, IJwtRolePermissionOptions, IJwtRoleValidationOptions } from '../IJwtOptions';
-import * as _ from 'lodash';
 import { OpenIdProxyClient } from './OpenIdProxyClient';
+import * as _ from 'lodash';
 
 export class OpenIdProxyService extends OpenIdService {
     // --------------------------------------------------------------------------
