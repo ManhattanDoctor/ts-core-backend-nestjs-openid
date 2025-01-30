@@ -17,6 +17,7 @@ export * from './decorator/JwtSkipUserInfo';
 //
 export * from './error/JwtError';
 export * from './error/JwtErrorCode';
+export * from './error/JwtErrorFilter';
 //
 export * from './guard/IJwtBearer';
 export * from './guard/JwtGuard';
