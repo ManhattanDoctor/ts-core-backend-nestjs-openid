@@ -7,3 +7,10 @@ export interface IKeycloakSettings {
     clientId: string;
     clientSecret: string;
 }
+
+export interface IKeycloakAdministratorSettings {
+    url: string;
+    realm: string;
+    userName: string;
+    userPassword: string;
+}

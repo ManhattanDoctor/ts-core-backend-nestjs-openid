@@ -22,9 +22,9 @@ export * from './error/JwtErrorFilter';
 export * from './guard/IJwtBearer';
 export * from './guard/JwtGuard';
 //
+export * from './lib/IJwtUser';
 export * from './lib/IJwtCode';
 export * from './lib/IJwtToken';
-export * from './lib/IJwtUser';
 //
 export * from './service/IJwtOptions';
 export * from './service/OpenIdService';
