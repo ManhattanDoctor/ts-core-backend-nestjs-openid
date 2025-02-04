@@ -1,3 +1,4 @@
+export * from './GetSettingsController';
 export * from './GetUserInfoController';
 export * from './GetTokenByCodeController';
 export * from './ValidateRoleController';

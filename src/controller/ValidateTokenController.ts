@@ -2,7 +2,7 @@
 import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { IOpenIdBearer, OpenIdGuard } from '../guard';
 import { OpenIdBearer, OpenIdPublic } from '../decorator';
-import { VALIDATE_TOKEN } from '../service/proxy';
+import { VALIDATE_TOKEN_URL } from '../service/proxy';
 import { IOpenIdUser, IOpenIdOfflineValidationOptions, OpenIdService } from '@ts-core/openid-common';
 import * as _ from 'lodash';
 
@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 //
 // --------------------------------------------------------------------------
 
-@Controller(VALIDATE_TOKEN)
+@Controller(VALIDATE_TOKEN_URL)
 export class ValidateTokenController {
     // --------------------------------------------------------------------------
     //

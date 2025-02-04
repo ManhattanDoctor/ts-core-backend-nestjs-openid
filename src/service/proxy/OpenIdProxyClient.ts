@@ -55,31 +55,32 @@ export class OpenIdProxyClient {
     // --------------------------------------------------------------------------
 
     public async getUserInfo<T extends IOpenIdUser>(): Promise<T> {
-        return this.get<T>(GET_USER_INFO);
+        return this.get<T>(GET_USER_INFO_URL);
     }
 
     public async getTokenByCode<T extends IOpenIdToken>(code: IOpenIdCode): Promise<T> {
-        return this.post<T>(GET_TOKEN_BY_CODE, code);
+        return this.post<T>(GET_TOKEN_BY_CODE_URL, code);
     }
 
     public async validateToken(options?: IOpenIdOfflineValidationOptions): Promise<void> {
-        await this.post(VALIDATE_TOKEN, options);
+        await this.post(VALIDATE_TOKEN_URL, options);
     }
 
     public async validateRole(options: IOpenIdRoleValidationOptions): Promise<void> {
-        await this.post(VALIDATE_ROLE, options);
+        await this.post(VALIDATE_ROLE_URL, options);
     }
 
     public async validateResource(options: IOpenIdResourceValidationOptions): Promise<void> {
-        await this.post(VALIDATE_RESOURCE, options);
+        await this.post(VALIDATE_RESOURCE_URL, options);
     }
 }
 
 const PREFIX = 'api/openid/';
 
-export const GET_USER_INFO = PREFIX + 'getuserinfo';
-export const GET_TOKEN_BY_CODE = PREFIX + 'gettokenbycode';
+export const GET_SETTINGS_URL = PREFIX;
+export const GET_USER_INFO_URL = PREFIX + 'getuserinfo';
+export const GET_TOKEN_BY_CODE_URL = PREFIX + 'gettokenbycode';
 
-export const VALIDATE_ROLE = PREFIX + 'validaterole';
-export const VALIDATE_TOKEN = PREFIX + 'validatetoken';
-export const VALIDATE_RESOURCE = PREFIX + 'validateresource';
+export const VALIDATE_ROLE_URL = PREFIX + 'validaterole';
+export const VALIDATE_TOKEN_URL = PREFIX + 'validatetoken';
+export const VALIDATE_RESOURCE_URL = PREFIX + 'validateresource';

@@ -2,7 +2,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { IOpenIdBearer, OpenIdGuard } from '../guard';
 import { OpenIdBearer, OpenIdPublic } from '../decorator';
-import { GET_USER_INFO } from '../service/proxy';
+import { GET_USER_INFO_URL } from '../service/proxy';
 import { IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 
 // --------------------------------------------------------------------------
@@ -11,7 +11,7 @@ import { IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 //
 // --------------------------------------------------------------------------
 
-@Controller(GET_USER_INFO)
+@Controller(GET_USER_INFO_URL)
 export class GetUserInfoController {
     // --------------------------------------------------------------------------
     //

@@ -1,9 +1,10 @@
 import { DynamicModule, Type, Provider } from '@nestjs/common';
 import { ExtendedError } from '@ts-core/common';
-import { GetTokenByCodeController, ValidateResourceController, GetUserInfoController, ValidateRoleController, ValidateTokenController } from './controller';
+import { GetTokenByCodeController, GetSettingsController, ValidateResourceController, GetUserInfoController, ValidateRoleController, ValidateTokenController } from './controller';
 import { OpenIdProxyService } from './service/proxy';
-import { OpenIdService, KeycloakService, IKeycloakSettings } from '@ts-core/openid-common';
 import { OpenIdGuard } from './guard';
+import { OpenIdService, KeycloakService, IKeycloakSettings } from '@ts-core/openid-common';
+import { OPEN_ID_SETTINGS } from './OpenIdSettings';
 
 export class OpenIdModule {
     // --------------------------------------------------------------------------
@@ -13,8 +14,14 @@ export class OpenIdModule {
     // --------------------------------------------------------------------------
 
     public static forServer(settings: IOpenIdModuleSettings): DynamicModule {
-        let providers: Array<Provider> = [OpenIdGuard];
-        let controllers: Array<Type> = settings.isNeedControllers ? [GetTokenByCodeController, GetUserInfoController, ValidateTokenController, ValidateResourceController, ValidateRoleController] : [];
+        let providers: Array<Provider> = [
+            {
+                provide: OPEN_ID_SETTINGS,
+                useValue: settings.settings
+            },
+            OpenIdGuard
+        ];
+        let controllers: Array<Type> = settings.isNeedControllers ? [GetTokenByCodeController, GetSettingsController, GetUserInfoController, ValidateTokenController, ValidateResourceController, ValidateRoleController] : [];
 
         switch (settings.type) {
             case OpenIdType.KEYCLOAK:
@@ -60,6 +67,7 @@ export class OpenIdModule {
 export enum OpenIdType {
     KEYCLOAK = 'KEYCLOAK'
 }
+
 
 export interface IOpenIdModuleSettings {
     type: OpenIdType;

@@ -3,7 +3,7 @@ import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsDefined } from 'class-validator';
 import { OpenIdBearer, OpenIdPublic } from '../decorator';
-import { VALIDATE_ROLE } from '../service/proxy';
+import { VALIDATE_ROLE_URL } from '../service/proxy';
 import { IOpenIdBearer, OpenIdGuard } from '../guard';
 import { IOpenIdRoleValidationOptions, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 import * as _ from 'lodash';
@@ -31,7 +31,7 @@ export class OpenIdRoleValidationOptions implements IOpenIdRoleValidationOptions
 //
 // --------------------------------------------------------------------------
 
-@Controller(VALIDATE_ROLE)
+@Controller(VALIDATE_ROLE_URL)
 export class ValidateRoleController {
     // --------------------------------------------------------------------------
     //
