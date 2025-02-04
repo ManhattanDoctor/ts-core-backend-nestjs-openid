@@ -1,4 +1,5 @@
 export * from './openid.module';
+export * from './OpenIdSettings';
 //
 export * from './controller/GetTokenByCodeController';
 export * from './controller/GetUserInfoController';
