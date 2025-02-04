@@ -1,10 +1,10 @@
 import { createVerify } from 'crypto';
 import { TokenExpiredError, TokenInvalidSignatureError, TokenNotSignedError, TokenResourceForbiddenError, TokenResourceScopeForbiddenError, TokenRoleForbiddenError, TokenRoleInvalidTypeError, TokenStaleError, TokenUndefinedError, TokenWrongAudienceError, TokenWrongClientIdError, TokenWrongIssError, TokenWrongTypeError } from '../../error';
-import * as _ from 'lodash';
 import { KeycloakResources } from './KeycloakClient';
 import { IJwtOfflineValidationOptions, IJwtResourceScopePermissionOptions, IJwtResourceValidationOptions, IJwtRoleValidationOptions } from '../IJwtOptions';
 import { KeycloakToken } from './KeycloakToken';
 import { IJwtUser } from '../../lib';
+import * as _ from 'lodash';
 
 export class KeycloakUtil {
     // --------------------------------------------------------------------------

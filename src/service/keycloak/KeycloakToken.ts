@@ -1,7 +1,7 @@
-import * as _ from 'lodash';
 import { DateUtil, ObjectUtil, TransformUtil } from '@ts-core/common';
 import { IJwtUser } from '../../lib';
 import { TokenInvalidError } from '../../error';
+import * as _ from 'lodash';
 
 export class KeycloakToken {
     // --------------------------------------------------------------------------

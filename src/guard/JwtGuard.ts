@@ -1,12 +1,14 @@
+import { IDestroyable } from '@ts-core/common';
 import { ExecutionContext, CanActivate, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IJwtBearer } from './IJwtBearer';
 import { IJwtOfflineValidationOptions, IJwtRoleValidationOptions, OpenIdService } from '../service';
 import { JwtUtil } from '../util';
+import { IJwtUser } from '../lib';
 import * as _ from 'lodash';
 
 @Injectable()
-export class JwtGuard implements CanActivate {
+export class JwtGuard implements CanActivate, IDestroyable {
     // --------------------------------------------------------------------------
     //
     //  Constants
@@ -25,11 +27,23 @@ export class JwtGuard implements CanActivate {
 
     // --------------------------------------------------------------------------
     //
+    //  Properties
+    //
+    // --------------------------------------------------------------------------
+
+    protected service: OpenIdService;
+    protected reflector: Reflector
+
+    // --------------------------------------------------------------------------
+    //
     //  Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(private service: OpenIdService, private reflector: Reflector) { }
+    constructor(service: OpenIdService, reflector: Reflector) {
+        this.service = service;
+        this.reflector = reflector;
+    }
 
     // --------------------------------------------------------------------------
     //
@@ -58,6 +72,10 @@ export class JwtGuard implements CanActivate {
         await this.service.validateToken(token, options);
     }
 
+    protected async getUserInfo<T extends IJwtUser>(token: string): Promise<T> {
+        return this.service.getUserInfo<T>(token);
+    }
+
     // --------------------------------------------------------------------------
     //
     //  Public Methods
@@ -83,8 +101,13 @@ export class JwtGuard implements CanActivate {
 
         let isSkipUserInfo = this.reflector.getAllAndOverride<boolean>(JwtGuard.META_IS_SKIP_USER_INFO, [context.getClass(), context.getHandler()]);
         if (!isSkipUserInfo) {
-            request.user = await this.service.getUserInfo(token);
+            request.user = await this.getUserInfo(token);
         }
         return true;
+    }
+
+    public destroy(): void {
+        this.service = null;
+        this.reflector = null;
     }
 }
