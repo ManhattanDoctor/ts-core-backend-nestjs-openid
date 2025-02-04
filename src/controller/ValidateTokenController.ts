@@ -1,11 +1,11 @@
 
 import { Controller, Body, Post, UseGuards } from '@nestjs/common';
-import { IJwtBearer, JwtGuard } from '../guard';
-import { JwtBearer, JwtPublic } from '../decorator';
+import { IOpenIdBearer, OpenIdGuard } from '../guard';
+import { OpenIdBearer, OpenIdPublic } from '../decorator';
 import { VALIDATE_TOKEN } from '../service/proxy';
-import { IJwtOfflineValidationOptions, OpenIdService } from '../service';
+import { IOpenIdUser, IOpenIdOfflineValidationOptions, OpenIdService } from '@ts-core/openid-common';
 import * as _ from 'lodash';
-import { IJwtUser } from '../lib';
+
 // --------------------------------------------------------------------------
 //
 //  Controller
@@ -29,9 +29,9 @@ export class ValidateTokenController {
     // --------------------------------------------------------------------------
 
     @Post()
-    @JwtPublic(false)
-    @UseGuards(JwtGuard)
-    public async execute<T extends IJwtUser>(@Body() options: IJwtOfflineValidationOptions, @JwtBearer() bearer: IJwtBearer<T>): Promise<void> {
+    @OpenIdPublic(false)
+    @UseGuards(OpenIdGuard)
+    public async execute<T extends IOpenIdUser>(@Body() options: IOpenIdOfflineValidationOptions, @OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<void> {
         return this.openid.validateToken(bearer.token, !_.isEmpty(options) ? options : null);
     }
 }

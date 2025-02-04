@@ -1,7 +1,5 @@
-import { OpenIdService } from '../OpenIdService';
-import { IJwtCode, IJwtToken, IJwtUser } from '../../lib';
-import { IJwtOfflineValidationOptions, IJwtResourceScopePermissionOptions, IJwtResourceValidationOptions, IJwtRolePermissionOptions, IJwtRoleValidationOptions } from '../IJwtOptions';
 import { OpenIdProxyClient } from './OpenIdProxyClient';
+import { IOpenIdOfflineValidationOptions, IOpenIdResourceScopePermissionOptions, IOpenIdResourceValidationOptions, IOpenIdRolePermissionOptions, IOpenIdRoleValidationOptions, IOpenIdCode, IOpenIdToken, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 import * as _ from 'lodash';
 
 export class OpenIdProxyService extends OpenIdService {
@@ -31,11 +29,11 @@ export class OpenIdProxyService extends OpenIdService {
     //
     // --------------------------------------------------------------------------
 
-    public async getTokenByCode<T extends IJwtToken>(code: IJwtCode): Promise<T> {
+    public async getTokenByCode<T extends IOpenIdToken>(code: IOpenIdCode): Promise<T> {
         return this.client(null).getTokenByCode(code);
     }
 
-    public async hasRole(token: string, options: IJwtRolePermissionOptions): Promise<boolean> {
+    public async hasRole(token: string, options: IOpenIdRolePermissionOptions): Promise<boolean> {
         try {
             await this.validateRole(token, options);
             return true;
@@ -45,7 +43,7 @@ export class OpenIdProxyService extends OpenIdService {
         }
     }
 
-    public async hasResourceScope(token: string, options: IJwtResourceScopePermissionOptions): Promise<boolean> {
+    public async hasResourceScope(token: string, options: IOpenIdResourceScopePermissionOptions): Promise<boolean> {
         try {
             await this.validateResource(token, options);
             return true;
@@ -61,19 +59,19 @@ export class OpenIdProxyService extends OpenIdService {
     //
     // --------------------------------------------------------------------------
 
-    public async getUserInfo<T extends IJwtUser>(token: string): Promise<T> {
+    public async getUserInfo<T extends IOpenIdUser>(token: string): Promise<T> {
         return this.client(token).getUserInfo();
     }
 
-    public async validateToken(token: string, options?: IJwtOfflineValidationOptions): Promise<void> {
+    public async validateToken(token: string, options?: IOpenIdOfflineValidationOptions): Promise<void> {
         return this.client(token).validateToken(options);
     }
 
-    public async validateRole(token: string, options: IJwtRoleValidationOptions): Promise<void> {
+    public async validateRole(token: string, options: IOpenIdRoleValidationOptions): Promise<void> {
         return this.client(token).validateRole(options);
     }
 
-    public async validateResource(token: string, options: IJwtResourceValidationOptions): Promise<void> {
+    public async validateResource(token: string, options: IOpenIdResourceValidationOptions): Promise<void> {
         return this.client(token).validateResource(options);
     }
 }

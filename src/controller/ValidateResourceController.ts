@@ -2,12 +2,11 @@
 import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsString, IsOptional, IsDefined } from 'class-validator';
-import { IJwtBearer, JwtGuard } from '../guard';
-import { JwtBearer, JwtPublic } from '../decorator';
+import { IOpenIdBearer, OpenIdGuard } from '../guard';
+import { OpenIdBearer, OpenIdPublic } from '../decorator';
 import { VALIDATE_RESOURCE } from '../service/proxy';
-import { IJwtResourceValidationOptions, OpenIdService } from '../service';
+import { IOpenIdResourceValidationOptions, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 import * as _ from 'lodash';
-import { IJwtUser } from '../lib';
 
 // --------------------------------------------------------------------------
 //
@@ -15,7 +14,7 @@ import { IJwtUser } from '../lib';
 //
 // --------------------------------------------------------------------------
 
-class JwtResourceValidationOptions implements IJwtResourceValidationOptions {
+class OpenIdResourceValidationOptions implements IOpenIdResourceValidationOptions {
     @ApiPropertyOptional()
     @IsOptional()
     @IsBoolean()
@@ -53,9 +52,9 @@ export class ValidateResourceController {
     // --------------------------------------------------------------------------
 
     @Post()
-    @JwtPublic(false)
-    @UseGuards(JwtGuard)
-    public async execute<T extends IJwtUser>(@Body() options: JwtResourceValidationOptions, @JwtBearer() bearer: IJwtBearer<T>): Promise<void> {
+    @OpenIdPublic(false)
+    @UseGuards(OpenIdGuard)
+    public async execute<T extends IOpenIdUser>(@Body() options: OpenIdResourceValidationOptions, @OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<void> {
         return this.openid.validateResource(bearer.token, options);
     }
 }

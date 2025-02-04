@@ -1,6 +1,5 @@
 import { isAxiosError, parseAxiosError } from '@ts-core/common';
-import { IJwtCode, IJwtToken, IJwtUser } from '../../lib';
-import { IJwtOfflineValidationOptions, IJwtResourceValidationOptions, IJwtRoleValidationOptions } from '../IJwtOptions';
+import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdResourceValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser} from '@ts-core/openid-common';
 import axios from 'axios';
 import * as _ from 'lodash';
 
@@ -55,23 +54,23 @@ export class OpenIdProxyClient {
     //
     // --------------------------------------------------------------------------
 
-    public async getUserInfo<T extends IJwtUser>(): Promise<T> {
+    public async getUserInfo<T extends IOpenIdUser>(): Promise<T> {
         return this.get<T>(GET_USER_INFO);
     }
 
-    public async getTokenByCode<T extends IJwtToken>(code: IJwtCode): Promise<T> {
+    public async getTokenByCode<T extends IOpenIdToken>(code: IOpenIdCode): Promise<T> {
         return this.post<T>(GET_TOKEN_BY_CODE, code);
     }
 
-    public async validateToken(options?: IJwtOfflineValidationOptions): Promise<void> {
+    public async validateToken(options?: IOpenIdOfflineValidationOptions): Promise<void> {
         await this.post(VALIDATE_TOKEN, options);
     }
 
-    public async validateRole(options: IJwtRoleValidationOptions): Promise<void> {
+    public async validateRole(options: IOpenIdRoleValidationOptions): Promise<void> {
         await this.post(VALIDATE_ROLE, options);
     }
 
-    public async validateResource(options: IJwtResourceValidationOptions): Promise<void> {
+    public async validateResource(options: IOpenIdResourceValidationOptions): Promise<void> {
         await this.post(VALIDATE_RESOURCE, options);
     }
 }

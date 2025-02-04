@@ -1,10 +1,9 @@
 
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { IJwtBearer, JwtGuard } from '../guard';
-import { JwtBearer, JwtPublic } from '../decorator';
-import { IJwtUser } from '../lib';
+import { IOpenIdBearer, OpenIdGuard } from '../guard';
+import { OpenIdBearer, OpenIdPublic } from '../decorator';
 import { GET_USER_INFO } from '../service/proxy';
-import { OpenIdService } from '../service';
+import { IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 
 // --------------------------------------------------------------------------
 //
@@ -29,9 +28,9 @@ export class GetUserInfoController {
     // --------------------------------------------------------------------------
 
     @Get()
-    @JwtPublic(false)
-    @UseGuards(JwtGuard)
-    public async execute<T extends IJwtUser>(@JwtBearer() bearer: IJwtBearer<T>): Promise<T> {
+    @OpenIdPublic(false)
+    @UseGuards(OpenIdGuard)
+    public async execute<T extends IOpenIdUser>(@OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<T> {
         return this.openid.getUserInfo<T>(bearer.token);
     }
 }

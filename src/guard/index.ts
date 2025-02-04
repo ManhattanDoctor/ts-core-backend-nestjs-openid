@@ -1,2 +1,2 @@
-export * from './IJwtBearer';
-export * from './JwtGuard';
+export * from './IOpenIdBearer';
+export * from './OpenIdGuard';

@@ -2,9 +2,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { IJwtCode, IJwtToken } from '../lib';
+import { IOpenIdCode, IOpenIdToken, OpenIdService } from '@ts-core/openid-common';
 import { GET_TOKEN_BY_CODE } from '../service/proxy';
-import { OpenIdService } from '../service';
 
 // --------------------------------------------------------------------------
 //
@@ -12,7 +11,7 @@ import { OpenIdService } from '../service';
 //
 // --------------------------------------------------------------------------
 
-class JwtCode implements IJwtCode {
+class OpenIdCode implements IOpenIdCode {
     @ApiProperty()
     @IsString()
     code: string;
@@ -45,7 +44,7 @@ export class GetTokenByCodeController {
     // --------------------------------------------------------------------------
 
     @Post()
-    public async execute<T extends IJwtToken>(@Body() params: JwtCode): Promise<T> {
+    public async execute<T extends IOpenIdToken>(@Body() params: OpenIdCode): Promise<T> {
         return this.openid.getTokenByCode<T>(params);
     }
 }

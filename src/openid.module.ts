@@ -1,10 +1,9 @@
 import { DynamicModule, Type, Provider } from '@nestjs/common';
 import { ExtendedError } from '@ts-core/common';
-import { OpenIdService } from './service';
-import { IKeycloakSettings, KeycloakService } from './service/keycloak';
-import { JwtGuard } from './guard';
 import { GetTokenByCodeController, ValidateResourceController, GetUserInfoController, ValidateRoleController, ValidateTokenController } from './controller';
 import { OpenIdProxyService } from './service/proxy';
+import { OpenIdService, KeycloakService, IKeycloakSettings } from '@ts-core/openid-common';
+import { OpenIdGuard } from './guard';
 
 export class OpenIdModule {
     // --------------------------------------------------------------------------
@@ -14,7 +13,7 @@ export class OpenIdModule {
     // --------------------------------------------------------------------------
 
     public static forServer(settings: IOpenIdModuleSettings): DynamicModule {
-        let providers: Array<Provider> = [JwtGuard];
+        let providers: Array<Provider> = [OpenIdGuard];
         let controllers: Array<Type> = settings.isNeedControllers ? [GetTokenByCodeController, GetUserInfoController, ValidateTokenController, ValidateResourceController, ValidateRoleController] : [];
 
         switch (settings.type) {
@@ -48,7 +47,7 @@ export class OpenIdModule {
                 provide: OpenIdService,
                 useFactory: () => new OpenIdProxyService(url)
             },
-            JwtGuard
+            OpenIdGuard
         ];
         return {
             module: OpenIdModule,

@@ -1,10 +1,10 @@
 
-export * from './JwtRole';
-export * from './JwtAnyRole';
-export * from './JwtPublic';
-export * from './JwtBearer';
-export * from './JwtSkipUserInfo';
-export * from './JwtOfflineValidation';
-export * from './JwtResource';
-export * from './JwtResourceScope';
+export * from './OpenIdRole';
+export * from './OpenIdAnyRole';
+export * from './OpenIdPublic';
+export * from './OpenIdBearer';
+export * from './OpenIdSkipUserInfo';
+export * from './OpenIdOfflineValidation';
+export * from './OpenIdResource';
+export * from './OpenIdResourceScope';
 

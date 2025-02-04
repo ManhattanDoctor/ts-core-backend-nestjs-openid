@@ -6,34 +6,19 @@ export * from './controller/ValidateResourceController';
 export * from './controller/ValidateRoleController';
 export * from './controller/ValidateTokenController';
 //
-export * from './decorator/JwtAnyRole';
-export * from './decorator/JwtBearer';
-export * from './decorator/JwtOfflineValidation';
-export * from './decorator/JwtPublic';
-export * from './decorator/JwtResource';
-export * from './decorator/JwtResourceScope';
-export * from './decorator/JwtRole';
-export * from './decorator/JwtSkipUserInfo';
+export * from './decorator/OpenIdAnyRole';
+export * from './decorator/OpenIdBearer';
+export * from './decorator/OpenIdOfflineValidation';
+export * from './decorator/OpenIdPublic';
+export * from './decorator/OpenIdResource';
+export * from './decorator/OpenIdResourceScope';
+export * from './decorator/OpenIdRole';
+export * from './decorator/OpenIdSkipUserInfo';
 //
-export * from './error/JwtError';
-export * from './error/JwtErrorCode';
-export * from './error/JwtErrorFilter';
+export * from './error/OpenIdErrorFilter';
 //
-export * from './guard/IJwtBearer';
-export * from './guard/JwtGuard';
+export * from './guard/IOpenIdBearer';
+export * from './guard/OpenIdGuard';
 //
-export * from './lib/IJwtUser';
-export * from './lib/IJwtCode';
-export * from './lib/IJwtToken';
-//
-export * from './service/IJwtOptions';
-export * from './service/OpenIdService';
 export * from './service/proxy/OpenIdProxyClient';
 export * from './service/proxy/OpenIdProxyService';
-export * from './service/keycloak/IKeycloakSettings';
-export * from './service/keycloak/KeycloakClient';
-export * from './service/keycloak/KeycloakService';
-export * from './service/keycloak/KeycloakToken';
-export * from './service/keycloak/KeycloakUtil';
-//
-export * from './util/JwtUtil';

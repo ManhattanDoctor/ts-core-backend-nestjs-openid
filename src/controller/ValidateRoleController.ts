@@ -2,12 +2,11 @@
 import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsDefined } from 'class-validator';
-import { IJwtBearer, JwtGuard } from '../guard';
-import { JwtBearer, JwtPublic } from '../decorator';
+import { OpenIdBearer, OpenIdPublic } from '../decorator';
 import { VALIDATE_ROLE } from '../service/proxy';
-import { IJwtRoleValidationOptions, OpenIdService } from '../service';
+import { IOpenIdBearer, OpenIdGuard } from '../guard';
+import { IOpenIdRoleValidationOptions, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 import * as _ from 'lodash';
-import { IJwtUser } from '../lib';
 
 // --------------------------------------------------------------------------
 //
@@ -15,7 +14,7 @@ import { IJwtUser } from '../lib';
 //
 // --------------------------------------------------------------------------
 
-export class JwtRoleValidationOptions implements IJwtRoleValidationOptions {
+export class OpenIdRoleValidationOptions implements IOpenIdRoleValidationOptions {
     @ApiPropertyOptional()
     @IsOptional()
     @IsBoolean()
@@ -49,9 +48,9 @@ export class ValidateRoleController {
     // --------------------------------------------------------------------------
 
     @Post()
-    @JwtPublic(false)
-    @UseGuards(JwtGuard)
-    public async execute<T extends IJwtUser>(@Body() options: JwtRoleValidationOptions, @JwtBearer() bearer: IJwtBearer<T>): Promise<void> {
+    @OpenIdPublic(false)
+    @UseGuards(OpenIdGuard)
+    public async execute<T extends IOpenIdUser>(@Body() options: OpenIdRoleValidationOptions, @OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<void> {
         return this.openid.validateRole(bearer.token, options);
     }
 }
