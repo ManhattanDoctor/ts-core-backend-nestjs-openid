@@ -18,15 +18,15 @@ class OpenIdResourceValidationOptions implements IOpenIdResourceValidationOption
     @ApiPropertyOptional()
     @IsOptional()
     @IsBoolean()
-    isAny: boolean;
+    public isAny: boolean;
 
     @ApiProperty()
     @IsString()
-    name: string;
+    public name: string;
 
     @ApiProperty()
     @IsDefined()
-    scope: string | Array<string>;
+    public scope: string | Array<string>;
 }
 
 // --------------------------------------------------------------------------

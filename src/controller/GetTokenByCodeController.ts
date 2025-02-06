@@ -14,11 +14,11 @@ import { GET_TOKEN_BY_CODE_URL } from '../service/proxy';
 class OpenIdCode implements IOpenIdCode {
     @ApiProperty()
     @IsString()
-    code: string;
+    public code: string;
 
     @ApiProperty()
     @IsString()
-    redirectUri: string;
+    public redirectUri: string;
 }
 
 // --------------------------------------------------------------------------

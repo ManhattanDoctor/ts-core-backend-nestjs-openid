@@ -18,11 +18,11 @@ export class OpenIdRoleValidationOptions implements IOpenIdRoleValidationOptions
     @ApiPropertyOptional()
     @IsOptional()
     @IsBoolean()
-    isAny?: boolean;
+    public isAny?: boolean;
 
     @ApiProperty()
     @IsDefined()
-    role: string | Array<string>;
+    public role: string | Array<string>;
 }
 
 // --------------------------------------------------------------------------
