@@ -1,0 +1,1 @@
+export const OPEN_ID_SETTINGS = 'OPEN_ID_SETTINGS';
