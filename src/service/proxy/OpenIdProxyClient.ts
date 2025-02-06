@@ -1,5 +1,5 @@
 import { isAxiosError, parseAxiosError } from '@ts-core/common';
-import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdResourceValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser} from '@ts-core/openid-common';
+import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdResourceValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser } from '@ts-core/openid-common';
 import axios from 'axios';
 import * as _ from 'lodash';
 
@@ -62,6 +62,10 @@ export class OpenIdProxyClient {
         return this.post<T>(GET_TOKEN_BY_CODE_URL, code);
     }
 
+    public async getTokenByRefreshToken<T extends IOpenIdToken>(token: string): Promise<T> {
+        return this.post<T>(`${GET_TOKEN_REFRESH_TOKEN_URL}/${token}`);
+    }
+
     public async validateToken(options?: IOpenIdOfflineValidationOptions): Promise<void> {
         await this.post(VALIDATE_TOKEN_URL, options);
     }
@@ -78,9 +82,10 @@ export class OpenIdProxyClient {
 const PREFIX = 'api/openid/';
 
 export const GET_SETTINGS_URL = PREFIX;
-export const GET_USER_INFO_URL = PREFIX + 'getuserinfo';
-export const GET_TOKEN_BY_CODE_URL = PREFIX + 'gettokenbycode';
+export const GET_USER_INFO_URL = PREFIX + 'getUserInfo';
+export const GET_TOKEN_BY_CODE_URL = PREFIX + 'getTokenByCode';
+export const GET_TOKEN_REFRESH_TOKEN_URL = PREFIX + 'getTokenByRefreshToken';
 
-export const VALIDATE_ROLE_URL = PREFIX + 'validaterole';
-export const VALIDATE_TOKEN_URL = PREFIX + 'validatetoken';
-export const VALIDATE_RESOURCE_URL = PREFIX + 'validateresource';
+export const VALIDATE_ROLE_URL = PREFIX + 'validateRole';
+export const VALIDATE_TOKEN_URL = PREFIX + 'validateToken';
+export const VALIDATE_RESOURCE_URL = PREFIX + 'validateResource';

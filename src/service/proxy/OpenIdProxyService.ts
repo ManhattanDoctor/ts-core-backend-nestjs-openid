@@ -33,6 +33,10 @@ export class OpenIdProxyService extends OpenIdService {
         return this.client(null).getTokenByCode(code);
     }
 
+    public async getTokenByRefreshToken<T extends IOpenIdToken>(token: string): Promise<T> {
+           return this.client(null).getTokenByRefreshToken(token);
+    }
+
     public async hasRole(token: string, options: IOpenIdRolePermissionOptions): Promise<boolean> {
         try {
             await this.validateRole(token, options);
