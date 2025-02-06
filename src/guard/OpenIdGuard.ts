@@ -15,13 +15,11 @@ export class OpenIdGuard<T extends IOpenIdUser = IOpenIdUser> implements CanActi
     // --------------------------------------------------------------------------
 
     public static META_ROLE: string = 'role'
-    public static META_IS_PUBLIC: string = 'isPublic';
-
     public static META_RESOURCE: string = 'resource'
     public static META_RESOURCE_SCOPE: string = 'scope'
 
     public static META_IS_SKIP_USER_INFO: string = 'isSkipGetUserInfo';
-    public static META_IS_SKIP_AUTHENTICATION: string = 'isSkipAuthentication';
+    public static META_IS_SKIP_VALIDATION: string = 'isSkipValidation';
     public static META_OFFLINE_VALIDATION_OPTIONS: string = 'offlineValidationOptions';
 
     // --------------------------------------------------------------------------
@@ -105,16 +103,16 @@ export class OpenIdGuard<T extends IOpenIdUser = IOpenIdUser> implements CanActi
     // --------------------------------------------------------------------------
 
     public async canActivate(context: ExecutionContext): Promise<boolean> {
-        let isPublic = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_PUBLIC, [context.getClass(), context.getHandler()]);
-        let isSkipAuthentication = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_SKIP_AUTHENTICATION, [context.getClass(), context.getHandler()]);
-        if (isPublic && isSkipAuthentication) {
-            return true;
+        let isSkipValidation = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_SKIP_VALIDATION, [context.getClass(), context.getHandler()]);
+        let request = context.switchToHttp().getRequest();
+        try {
+            request.token = OpenIdGuard.extractFromRequest(request);
         }
-
-        let request = <IOpenIdBearer>context.switchToHttp().getRequest();
-        request.token = OpenIdGuard.extractFromRequest(request);
-        if (isPublic) {
-            return true;
+        catch (error) {
+            if (isSkipValidation) {
+                return true;
+            }
+            throw error;
         }
 
         let { token } = request;

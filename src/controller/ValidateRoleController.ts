@@ -2,10 +2,10 @@
 import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsDefined } from 'class-validator';
-import { OpenIdBearer, OpenIdPublic } from '../decorator';
+import { OpenIdBearer, OpenIdSkipValidation } from '../decorator';
 import { VALIDATE_ROLE_URL } from '../service/proxy';
 import { IOpenIdBearer, OpenIdGuard } from '../guard';
-import { IOpenIdRoleValidationOptions, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
+import { IOpenIdRoleValidationOptions, IOpenIdUser, OpenIdService, OpenIdTokenUndefinedError } from '@ts-core/openid-common';
 import * as _ from 'lodash';
 
 // --------------------------------------------------------------------------
@@ -48,9 +48,12 @@ export class ValidateRoleController {
     // --------------------------------------------------------------------------
 
     @Post()
-    @OpenIdPublic(false)
+    @OpenIdSkipValidation()
     @UseGuards(OpenIdGuard)
     public async execute<T extends IOpenIdUser>(@Body() options: OpenIdRoleValidationOptions, @OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<void> {
+        if (_.isNil(bearer.token)) {
+            throw new OpenIdTokenUndefinedError();
+        }
         return this.service.validateRole(bearer.token, options);
     }
 }

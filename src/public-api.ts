@@ -6,12 +6,11 @@ export * from './controller/GetUserInfoController';
 export * from './controller/ValidateResourceController';
 export * from './controller/ValidateRoleController';
 export * from './controller/ValidateTokenController';
-export * from './controller/GetTokenByRefreshTokenController';
 //
 export * from './decorator/OpenIdAnyRole';
 export * from './decorator/OpenIdBearer';
 export * from './decorator/OpenIdOfflineValidation';
-export * from './decorator/OpenIdPublic';
+export * from './decorator/OpenIdSkipValidation';
 export * from './decorator/OpenIdResource';
 export * from './decorator/OpenIdResourceScope';
 export * from './decorator/OpenIdRole';

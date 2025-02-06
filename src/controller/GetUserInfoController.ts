@@ -1,9 +1,10 @@
 
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { IOpenIdBearer, OpenIdGuard } from '../guard';
-import { OpenIdBearer, OpenIdPublic } from '../decorator';
+import { OpenIdBearer, OpenIdSkipValidation } from '../decorator';
 import { GET_USER_INFO_URL } from '../service/proxy';
-import { IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
+import { IOpenIdUser, OpenIdService, OpenIdTokenUndefinedError } from '@ts-core/openid-common';
+import * as _ from 'lodash';
 
 // --------------------------------------------------------------------------
 //
@@ -28,9 +29,12 @@ export class GetUserInfoController {
     // --------------------------------------------------------------------------
 
     @Get()
-    @OpenIdPublic(false)
+    @OpenIdSkipValidation()
     @UseGuards(OpenIdGuard)
     public async execute<T extends IOpenIdUser>(@OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<T> {
+        if (_.isNil(bearer.token)) {
+            throw new OpenIdTokenUndefinedError();
+        }
         return this.service.getUserInfo<T>(bearer.token);
     }
 }

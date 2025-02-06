@@ -1,7 +1,7 @@
 
 export * from './OpenIdRole';
 export * from './OpenIdAnyRole';
-export * from './OpenIdPublic';
+export * from './OpenIdSkipValidation';
 export * from './OpenIdBearer';
 export * from './OpenIdSkipUserInfo';
 export * from './OpenIdOfflineValidation';
