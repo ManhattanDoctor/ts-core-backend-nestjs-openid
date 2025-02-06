@@ -43,7 +43,7 @@ export class ValidateResourceController {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private openid: OpenIdService) { }
+    constructor(private service: OpenIdService) { }
 
     // --------------------------------------------------------------------------
     //
@@ -55,6 +55,6 @@ export class ValidateResourceController {
     @OpenIdPublic(false)
     @UseGuards(OpenIdGuard)
     public async execute<T extends IOpenIdUser>(@Body() options: OpenIdResourceValidationOptions, @OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<void> {
-        return this.openid.validateResource(bearer.token, options);
+        return this.service.validateResource(bearer.token, options);
     }
 }

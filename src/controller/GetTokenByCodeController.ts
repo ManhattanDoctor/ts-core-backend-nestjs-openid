@@ -35,7 +35,7 @@ export class GetTokenByCodeController {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private openid: OpenIdService) { }
+    constructor(private service: OpenIdService) { }
 
     // --------------------------------------------------------------------------
     //
@@ -45,6 +45,6 @@ export class GetTokenByCodeController {
 
     @Post()
     public async execute<T extends IOpenIdToken>(@Body() params: OpenIdCode): Promise<T> {
-        return this.openid.getTokenByCode<T>(params);
+        return this.service.getTokenByCode<T>(params);
     }
 }

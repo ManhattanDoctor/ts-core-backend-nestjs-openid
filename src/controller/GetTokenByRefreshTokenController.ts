@@ -1,7 +1,6 @@
 
 import { Controller, Param, Post } from '@nestjs/common';
 import { IOpenIdToken, OpenIdService } from '@ts-core/openid-common';
-import { GET_TOKEN_REFRESH_TOKEN_URL } from '../service/proxy';
 
 // --------------------------------------------------------------------------
 //
@@ -9,7 +8,7 @@ import { GET_TOKEN_REFRESH_TOKEN_URL } from '../service/proxy';
 //
 // --------------------------------------------------------------------------
 
-@Controller(`${GET_TOKEN_REFRESH_TOKEN_URL}/:token`)
+@Controller(`test/:token`)
 export class GetTokenByRefreshTokenController {
     // --------------------------------------------------------------------------
     //
@@ -17,7 +16,7 @@ export class GetTokenByRefreshTokenController {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private openid: OpenIdService) { }
+    constructor(private service: OpenIdService) { }
 
     // --------------------------------------------------------------------------
     //
@@ -26,7 +25,7 @@ export class GetTokenByRefreshTokenController {
     // --------------------------------------------------------------------------
 
     @Post()
-    public async execute<T extends IOpenIdToken>(@Param() token: string): Promise<T> {
-        return this.openid.getTokenByRefreshToken<T>(token);
+    public async execute<T extends IOpenIdToken>(@Param('token') token: string): Promise<T> {
+        return this.service.getTokenByRefreshToken<T>(token);
     }
 }

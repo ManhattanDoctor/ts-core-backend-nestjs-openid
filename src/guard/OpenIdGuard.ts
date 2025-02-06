@@ -112,11 +112,12 @@ export class OpenIdGuard<T extends IOpenIdUser = IOpenIdUser> implements CanActi
         }
 
         let request = <IOpenIdBearer>context.switchToHttp().getRequest();
-        let token = request.token = OpenIdGuard.extractFromRequest(request);
+        request.token = OpenIdGuard.extractFromRequest(request);
         if (isPublic) {
             return true;
         }
 
+        let { token } = request;
         await this.validateToken(context, token);
         await this.validateRole(context, token);
         await this.validateResource(context, token);

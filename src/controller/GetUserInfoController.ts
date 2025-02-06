@@ -19,7 +19,7 @@ export class GetUserInfoController {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private openid: OpenIdService) { }
+    constructor(private service: OpenIdService) { }
 
     // --------------------------------------------------------------------------
     //
@@ -31,6 +31,6 @@ export class GetUserInfoController {
     @OpenIdPublic(false)
     @UseGuards(OpenIdGuard)
     public async execute<T extends IOpenIdUser>(@OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<T> {
-        return this.openid.getUserInfo<T>(bearer.token);
+        return this.service.getUserInfo<T>(bearer.token);
     }
 }

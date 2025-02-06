@@ -39,7 +39,7 @@ export class ValidateRoleController {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private openid: OpenIdService) { }
+    constructor(private service: OpenIdService) { }
 
     // --------------------------------------------------------------------------
     //
@@ -51,6 +51,6 @@ export class ValidateRoleController {
     @OpenIdPublic(false)
     @UseGuards(OpenIdGuard)
     public async execute<T extends IOpenIdUser>(@Body() options: OpenIdRoleValidationOptions, @OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<void> {
-        return this.openid.validateRole(bearer.token, options);
+        return this.service.validateRole(bearer.token, options);
     }
 }

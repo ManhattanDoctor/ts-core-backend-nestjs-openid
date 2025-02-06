@@ -20,7 +20,7 @@ export class ValidateTokenController {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private openid: OpenIdService) { }
+    constructor(private service: OpenIdService) { }
 
     // --------------------------------------------------------------------------
     //
@@ -32,6 +32,6 @@ export class ValidateTokenController {
     @OpenIdPublic(false)
     @UseGuards(OpenIdGuard)
     public async execute<T extends IOpenIdUser>(@Body() options: IOpenIdOfflineValidationOptions, @OpenIdBearer() bearer: IOpenIdBearer<T>): Promise<void> {
-        return this.openid.validateToken(bearer.token, !_.isEmpty(options) ? options : null);
+        return this.service.validateToken(bearer.token, !_.isEmpty(options) ? options : null);
     }
 }
