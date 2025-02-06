@@ -114,6 +114,9 @@ export class OpenIdGuard<T extends IOpenIdUser = IOpenIdUser> implements CanActi
             }
             throw error;
         }
+        if (isSkipValidation) {
+            return true;
+        }
 
         let { token } = request;
         await this.validateToken(context, token);
