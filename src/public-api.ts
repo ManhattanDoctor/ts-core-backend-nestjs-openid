@@ -1,7 +1,6 @@
 export * from './openid.module';
 export * from './OpenIdSettings';
 //
-export * from './controller/GetSettingsController';
 export * from './controller/GetTokenByCodeController';
 export * from './controller/GetUserInfoController';
 export * from './controller/ValidateResourceController';
@@ -19,6 +18,9 @@ export * from './decorator/OpenIdRole';
 export * from './decorator/OpenIdSkipUserInfo';
 //
 export * from './error/OpenIdErrorFilter';
+export * from './error/OpenIdRequestErrorFilter';
+export * from './error/OpenIdRequestError';
+export * from './error/OpenIdRequestErrorCode';
 //
 export * from './guard/IOpenIdBearer';
 export * from './guard/OpenIdGuard';

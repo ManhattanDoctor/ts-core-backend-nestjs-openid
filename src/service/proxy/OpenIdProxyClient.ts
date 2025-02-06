@@ -81,7 +81,6 @@ export class OpenIdProxyClient {
 
 const PREFIX = 'api/openid/';
 
-export const GET_SETTINGS_URL = PREFIX;
 export const GET_USER_INFO_URL = PREFIX + 'getUserInfo';
 export const GET_TOKEN_BY_CODE_URL = PREFIX + 'getTokenByCode';
 export const GET_TOKEN_REFRESH_TOKEN_URL = PREFIX + 'getTokenByRefreshToken';
