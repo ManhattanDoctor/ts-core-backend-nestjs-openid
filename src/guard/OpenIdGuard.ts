@@ -70,8 +70,8 @@ export class OpenIdGuard<T extends IOpenIdUser = IOpenIdUser> implements CanActi
         await this.service.validateToken(token, options);
     }
 
-    protected async getUserInfo(token: string): Promise<T> {
-        return this.service.getUserInfo<T>(token);
+    protected async getUserInfo(token: string, isOffline?: boolean): Promise<T> {
+        return this.service.getUserInfo<T>(token, isOffline);
     }
 
     // --------------------------------------------------------------------------
