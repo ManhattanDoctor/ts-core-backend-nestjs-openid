@@ -66,6 +66,10 @@ export class OpenIdProxyClient {
         return this.post<T>(`${GET_TOKEN_BY_REFRESH_TOKEN_URL}/${token}`);
     }
 
+    public async logoutByRefreshToken(token: string): Promise<void> {
+        return this.post(`${LOGOUT_BY_REFRESH_TOKEN_URL}/${token}`);
+    }
+
     public async validateToken(options?: IOpenIdOfflineValidationOptions): Promise<void> {
         await this.post(VALIDATE_TOKEN_URL, options);
     }
@@ -84,6 +88,7 @@ const PREFIX = 'api/openId/';
 export const GET_USER_INFO_URL = PREFIX + 'getUserInfo';
 export const GET_TOKEN_BY_CODE_URL = PREFIX + 'getTokenByCode';
 export const GET_TOKEN_BY_REFRESH_TOKEN_URL = PREFIX + 'getTokenByRefreshToken';
+export const LOGOUT_BY_REFRESH_TOKEN_URL = PREFIX + 'logoutByRefreshToken';
 
 export const VALIDATE_ROLE_URL = PREFIX + 'validateRole';
 export const VALIDATE_TOKEN_URL = PREFIX + 'validateToken';

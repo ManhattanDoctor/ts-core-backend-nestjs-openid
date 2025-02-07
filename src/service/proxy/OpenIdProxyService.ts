@@ -37,6 +37,10 @@ export class OpenIdProxyService extends OpenIdService {
            return this.client(null).getTokenByRefreshToken(token);
     }
 
+    public async logoutByRefreshToken(token: string): Promise<void> {
+           return this.client(null).logoutByRefreshToken(token);
+    }
+
     public async hasRole(token: string, options: IOpenIdRolePermissionOptions): Promise<boolean> {
         try {
             await this.validateRole(token, options);
