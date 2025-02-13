@@ -1,5 +1,5 @@
 import { isAxiosError, parseAxiosError } from '@ts-core/common';
-import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdResourceValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser } from '@ts-core/openid-common';
+import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser, OpenIdResourceValidationOptions } from '@ts-core/openid-common';
 import axios from 'axios';
 import * as _ from 'lodash';
 
@@ -78,7 +78,7 @@ export class OpenIdProxyClient {
         await this.post(VALIDATE_ROLE_URL, options);
     }
 
-    public async validateResource(options: IOpenIdResourceValidationOptions): Promise<void> {
+    public async validateResource(options: OpenIdResourceValidationOptions): Promise<void> {
         await this.post(VALIDATE_RESOURCE_URL, options);
     }
 }
