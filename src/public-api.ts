@@ -14,7 +14,7 @@ export * from './decorator/OpenIdSkipValidation';
 export * from './decorator/OpenIdResource';
 export * from './decorator/OpenIdResourceScope';
 export * from './decorator/OpenIdRole';
-export * from './decorator/OpenIdSkipUserInfo';
+export * from './decorator/OpenIdGetUserInfo';
 //
 export * from './error/OpenIdErrorFilter';
 export * from './error/OpenIdRequestErrorFilter';

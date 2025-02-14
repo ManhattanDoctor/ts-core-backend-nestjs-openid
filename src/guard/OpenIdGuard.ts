@@ -17,7 +17,7 @@ export class OpenIdGuard<T extends IOpenIdToken = IOpenIdToken, U extends IOpenI
     public static META_RESOURCE: string = 'resource'
     public static META_RESOURCE_SCOPE: string = 'scope'
 
-    public static META_IS_SKIP_USER_INFO: string = 'isSkipGetUserInfo';
+    public static META_IS_GET_USER_INFO: string = 'isGetUserInfo';
     public static META_IS_SKIP_VALIDATION: string = 'isSkipValidation';
     public static META_OFFLINE_VALIDATION_OPTIONS: string = 'offlineValidationOptions';
 
@@ -126,8 +126,8 @@ export class OpenIdGuard<T extends IOpenIdToken = IOpenIdToken, U extends IOpenI
         await this.validateRole(context, token);
         await this.validateResource(context, token);
 
-        let isSkipUserInfo = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_SKIP_USER_INFO, [context.getClass(), context.getHandler()]);
-        if (!isSkipUserInfo) {
+        let isGetUserInfo = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_GET_USER_INFO, [context.getClass(), context.getHandler()]);
+        if (isGetUserInfo) {
             request.user = await this.getUserInfo(context, token);
         }
         return true;
