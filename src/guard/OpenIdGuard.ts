@@ -1,13 +1,12 @@
 import { IDestroyable } from '@ts-core/common';
 import { ExecutionContext, CanActivate, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
-import * as _ from 'lodash';
-import { IOpenIdBearer } from './IOpenIdBearer';
+import { IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 import { OpenIdRequestHeaderUndefinedError, OpenIdRequestUndefinedError } from '../error';
+import * as _ from 'lodash';
 
 @Injectable()
-export class OpenIdGuard<T extends IOpenIdUser = IOpenIdUser> implements CanActivate, IDestroyable {
+export class OpenIdGuard<T extends IOpenIdToken = IOpenIdToken, U extends IOpenIdUser = IOpenIdUser> implements CanActivate, IDestroyable {
     // --------------------------------------------------------------------------
     //
     //  Constants
@@ -70,30 +69,34 @@ export class OpenIdGuard<T extends IOpenIdUser = IOpenIdUser> implements CanActi
     //
     // --------------------------------------------------------------------------
 
-    protected async validateRole(context: ExecutionContext, token: string): Promise<void> {
+    protected async validateRole(context: ExecutionContext, token: T): Promise<void> {
         let options = this.reflector.getAllAndOverride<IOpenIdRoleValidationOptions>(OpenIdGuard.META_ROLE, [context.getClass(), context.getHandler()]);
         if (!_.isNil(options)) {
-            await this.service.validateRole(token, options)
+            await this.service.validateRole(token.value, options)
         }
     }
 
-    protected async validateResource(context: ExecutionContext, token: string): Promise<void> {
+    protected async validateResource(context: ExecutionContext, token: T): Promise<void> {
         let name = this.reflector.getAllAndOverride<string>(OpenIdGuard.META_RESOURCE, [context.getClass(), context.getHandler()]);
         if (_.isNil(name)) {
             return;
         }
         let scope = this.reflector.getAllAndMerge<Array<string>>(OpenIdGuard.META_RESOURCE_SCOPE, [context.getClass(), context.getHandler()]);
-        await this.service.validateResource(token, { name, scope });
+        await this.service.validateResource(token.value, { name, scope });
     }
 
-    protected async validateToken(context: ExecutionContext, token: string): Promise<void> {
+    protected async validateToken(context: ExecutionContext, token: T): Promise<void> {
         let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, [context.getClass(), context.getHandler()]);
-        await this.service.validateToken(token, options);
+        await this.service.validateToken(token.value, options);
     }
 
-    protected async getUserInfo(context: ExecutionContext, token: string): Promise<T> {
+    protected async getToken(context: ExecutionContext, value: string): Promise<T> {
+        return { value } as T;
+    }
+
+    protected async getUserInfo(context: ExecutionContext, token: T): Promise<U> {
         let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, [context.getClass(), context.getHandler()]);
-        return this.service.getUserInfo<T>(token, !_.isNil(options));
+        return this.service.getUserInfo<U>(token.value, !_.isNil(options));
     }
 
     // --------------------------------------------------------------------------
@@ -105,20 +108,20 @@ export class OpenIdGuard<T extends IOpenIdUser = IOpenIdUser> implements CanActi
     public async canActivate(context: ExecutionContext): Promise<boolean> {
         let isSkipValidation = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_SKIP_VALIDATION, [context.getClass(), context.getHandler()]);
         let request = context.switchToHttp().getRequest();
+
+        let token: T = null;
         try {
-            request.token = OpenIdGuard.extractFromRequest(request);
+            token = request.token = token = await this.getToken(context, OpenIdGuard.extractFromRequest(request));
         }
         catch (error) {
-            if (isSkipValidation) {
-                return true;
+            if (!isSkipValidation) {
+                throw error;
             }
-            throw error;
         }
         if (isSkipValidation) {
             return true;
         }
 
-        let { token } = request;
         await this.validateToken(context, token);
         await this.validateRole(context, token);
         await this.validateResource(context, token);

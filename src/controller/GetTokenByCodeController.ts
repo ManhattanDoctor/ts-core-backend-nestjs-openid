@@ -2,7 +2,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { IOpenIdCode, IOpenIdToken, OpenIdService } from '@ts-core/openid-common';
+import { IOpenIdCode, IOpenIdRefreshable, OpenIdService } from '@ts-core/openid-common';
 import { GET_TOKEN_BY_CODE_URL } from '../service/proxy';
 
 // --------------------------------------------------------------------------
@@ -44,7 +44,7 @@ export class GetTokenByCodeController {
     // --------------------------------------------------------------------------
 
     @Post()
-    public async execute<T extends IOpenIdToken>(@Body() params: OpenIdCode): Promise<T> {
+    public async execute<T extends IOpenIdRefreshable>(@Body() params: OpenIdCode): Promise<T> {
         return this.service.getTokenByCode<T>(params);
     }
 }

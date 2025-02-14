@@ -1,5 +1,5 @@
 import { isAxiosError, parseAxiosError } from '@ts-core/common';
-import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser, OpenIdResourceValidationOptions } from '@ts-core/openid-common';
+import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdRefreshable, IOpenIdUser, OpenIdResourceValidationOptions } from '@ts-core/openid-common';
 import axios from 'axios';
 import * as _ from 'lodash';
 
@@ -58,11 +58,11 @@ export class OpenIdProxyClient {
         return this.get<T>(GET_USER_INFO_URL);
     }
 
-    public async getTokenByCode<T extends IOpenIdToken>(code: IOpenIdCode): Promise<T> {
+    public async getTokenByCode<T extends IOpenIdRefreshable>(code: IOpenIdCode): Promise<T> {
         return this.post<T>(GET_TOKEN_BY_CODE_URL, code);
     }
 
-    public async getTokenByRefreshToken<T extends IOpenIdToken>(token: string): Promise<T> {
+    public async getTokenByRefreshToken<T extends IOpenIdRefreshable>(token: string): Promise<T> {
         return this.post<T>(`${GET_TOKEN_BY_REFRESH_TOKEN_URL}/${token}`);
     }
 
