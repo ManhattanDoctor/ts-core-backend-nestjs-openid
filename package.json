@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/backend-nestjs-openid",
-    "version": "10.1.11",
+    "version": "10.1.12",
     "description": "Classes for NestJS OpenId",
     "scripts": {},
     "author": {
