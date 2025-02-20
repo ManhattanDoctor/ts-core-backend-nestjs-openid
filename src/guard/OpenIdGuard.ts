@@ -3,10 +3,11 @@ import { ExecutionContext, CanActivate, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
 import { OpenIdRequestHeaderUndefinedError, OpenIdRequestUndefinedError } from '../error';
+import { IOpenIdBearer } from './IOpenIdBearer';
 import * as _ from 'lodash';
 
 @Injectable()
-export class OpenIdGuard<T extends IOpenIdToken = IOpenIdToken, U extends IOpenIdUser = IOpenIdUser> implements CanActivate, IDestroyable {
+export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken = IOpenIdToken, U extends IOpenIdUser = IOpenIdUser> implements CanActivate, IDestroyable {
     // --------------------------------------------------------------------------
     //
     //  Constants
@@ -69,14 +70,14 @@ export class OpenIdGuard<T extends IOpenIdToken = IOpenIdToken, U extends IOpenI
     //
     // --------------------------------------------------------------------------
 
-    protected async validateRole<R>(context: ExecutionContext, request: R, token: T): Promise<void> {
+    protected async validateRole(context: ExecutionContext, request: B, token: T): Promise<void> {
         let options = this.reflector.getAllAndOverride<IOpenIdRoleValidationOptions>(OpenIdGuard.META_ROLE, [context.getClass(), context.getHandler()]);
         if (!_.isNil(options)) {
             await this.service.validateRole(token.value, options)
         }
     }
 
-    protected async validateResource<R>(context: ExecutionContext, request: R, token: T): Promise<void> {
+    protected async validateResource(context: ExecutionContext, request: B, token: T): Promise<void> {
         let name = this.reflector.getAllAndOverride<string>(OpenIdGuard.META_RESOURCE, [context.getClass(), context.getHandler()]);
         if (_.isNil(name)) {
             return;
@@ -85,16 +86,16 @@ export class OpenIdGuard<T extends IOpenIdToken = IOpenIdToken, U extends IOpenI
         await this.service.validateResource(token.value, { name, scope });
     }
 
-    protected async validateToken<R>(context: ExecutionContext, request: R, token: T): Promise<void> {
+    protected async validateToken(context: ExecutionContext, bearer: B, token: T): Promise<void> {
         let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, [context.getClass(), context.getHandler()]);
         await this.service.validateToken(token.value, options);
     }
 
-    protected async getToken<R>(context: ExecutionContext, request: R, value: string): Promise<T> {
+    protected async getToken(context: ExecutionContext, bearer: B, value: string): Promise<T> {
         return { value } as T;
     }
 
-    protected async getUserInfo<R>(context: ExecutionContext, request: R, token: T): Promise<U> {
+    protected async getUserInfo<R>(context: ExecutionContext, bearer: B, token: T): Promise<U> {
         let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, [context.getClass(), context.getHandler()]);
         return this.service.getUserInfo<U>(token.value, !_.isNil(options));
     }
