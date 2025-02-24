@@ -1,6 +1,6 @@
 import { DynamicModule, Type, Provider } from '@nestjs/common';
 import { ExtendedError } from '@ts-core/common';
-import { GetTokenByCodeController, ValidateResourceController, GetUserInfoController, ValidateRoleController, ValidateTokenController } from './controller';
+import { GetTokenByCodeController, GetResourcesController, ValidateResourceController, GetUserInfoController, ValidateRoleController, ValidateTokenController } from './controller';
 import { OpenIdProxyService } from './service/proxy';
 import { OpenIdGuard } from './guard';
 import { OpenIdService, KeycloakService, IKeycloakSettings } from '@ts-core/openid-common';
@@ -21,7 +21,7 @@ export class OpenIdModule {
             },
             OpenIdGuard
         ];
-        let controllers: Array<Type> = settings.isNeedControllers ? [GetTokenByCodeController, GetUserInfoController, ValidateTokenController, ValidateResourceController, ValidateRoleController] : [];
+        let controllers: Array<Type> = settings.isNeedControllers ? [GetTokenByCodeController, GetUserInfoController, GetResourcesController, ValidateTokenController, ValidateResourceController, ValidateRoleController] : [];
 
         switch (settings.type) {
             case OpenIdType.KEYCLOAK:

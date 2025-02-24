@@ -1,5 +1,5 @@
 import { isAxiosError, parseAxiosError } from '@ts-core/common';
-import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdTokenRefreshable, IOpenIdUser, OpenIdResourceValidationOptions } from '@ts-core/openid-common';
+import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdResource, IOpenIdRoleValidationOptions, IOpenIdTokenRefreshable, IOpenIdUser, OpenIdResources, OpenIdResourceValidationOptions } from '@ts-core/openid-common';
 import axios from 'axios';
 import * as _ from 'lodash';
 
@@ -66,6 +66,13 @@ export class OpenIdProxyClient {
         return this.post<T>(`${GET_TOKEN_BY_REFRESH_TOKEN_URL}/${token}`);
     }
 
+    public async getResources(token: string, options?: OpenIdResourceValidationOptions): Promise<OpenIdResources> {
+        let items = await this.post<Array<IOpenIdResource>>(GET_RESOURCES_URL, { token, options });
+        let map = new Map();
+        items.forEach(item => map.set(item.name, item));
+        return map;
+    }
+
     public async logoutByRefreshToken(token: string): Promise<void> {
         return this.post(`${LOGOUT_BY_REFRESH_TOKEN_URL}/${token}`);
     }
@@ -86,6 +93,8 @@ export class OpenIdProxyClient {
 const PREFIX = 'api/openId/';
 
 export const GET_USER_INFO_URL = PREFIX + 'getUserInfo';
+export const GET_RESOURCES_URL = PREFIX + 'getResources';
+
 export const GET_TOKEN_BY_CODE_URL = PREFIX + 'getTokenByCode';
 export const GET_TOKEN_BY_REFRESH_TOKEN_URL = PREFIX + 'getTokenByRefreshToken';
 export const LOGOUT_BY_REFRESH_TOKEN_URL = PREFIX + 'logoutByRefreshToken';

@@ -6,6 +6,7 @@ export * from './controller/GetUserInfoController';
 export * from './controller/ValidateResourceController';
 export * from './controller/ValidateRoleController';
 export * from './controller/ValidateTokenController';
+export * from './controller/GetResourcesController';
 //
 export * from './decorator/OpenIdAnyRole';
 export * from './decorator/OpenIdBearer';
