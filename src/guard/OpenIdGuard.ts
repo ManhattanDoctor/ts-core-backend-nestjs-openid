@@ -91,6 +91,8 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
         await this.service.validateToken(token.value, options);
     }
 
+    protected async validationComplete(context: ExecutionContext, bearer: B, token: T): Promise<void> { }
+
     protected async getToken(context: ExecutionContext, bearer: B, value: string): Promise<T> {
         return { value } as T;
     }
@@ -131,6 +133,7 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
         if (isGetUserInfo) {
             request.user = await this.getUserInfo(context, request, token);
         }
+        await this.validationComplete(context, request, token);
         return true;
     }
 
