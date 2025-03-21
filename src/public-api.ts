@@ -8,7 +8,6 @@ export * from './controller/ValidateRoleController';
 export * from './controller/ValidateTokenController';
 export * from './controller/GetResourcesController';
 //
-export * from './decorator/OpenIdAnyRole';
 export * from './decorator/OpenIdBearer';
 export * from './decorator/OpenIdOfflineValidation';
 export * from './decorator/OpenIdSkipValidation';
@@ -16,6 +15,7 @@ export * from './decorator/OpenIdResource';
 export * from './decorator/OpenIdResourceScope';
 export * from './decorator/OpenIdRole';
 export * from './decorator/OpenIdGetUserInfo';
+export * from './decorator/OpenIdNeedResources';
 //
 export * from './error/OpenIdErrorFilter';
 export * from './error/OpenIdRequestErrorFilter';

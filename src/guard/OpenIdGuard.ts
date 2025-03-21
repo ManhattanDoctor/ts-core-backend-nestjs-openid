@@ -1,7 +1,7 @@
 import { IDestroyable } from '@ts-core/common';
 import { ExecutionContext, CanActivate, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser, OpenIdService } from '@ts-core/openid-common';
+import { IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser, OpenIdResources, OpenIdResourceValidationOptions, OpenIdService } from '@ts-core/openid-common';
 import { OpenIdRequestHeaderUndefinedError, OpenIdRequestUndefinedError } from '../error';
 import { IOpenIdBearer } from './IOpenIdBearer';
 import * as _ from 'lodash';
@@ -14,9 +14,12 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
     //
     // --------------------------------------------------------------------------
 
-    public static META_ROLE: string = 'role'
-    public static META_RESOURCE: string = 'resource'
-    public static META_RESOURCE_SCOPE: string = 'scope'
+    public static META_VALIDATE_ROLE: string = 'validateRole'
+    public static META_VALIDATE_RESOURCE: string = 'validateResource'
+    public static META_VALIDATE_RESOURCE_SCOPE: string = 'validateScope'
+
+    public static META_IS_NEED_RESOURCES: string = 'isNeedResources';
+    public static META_NEED_RESOURCES_OPTIONS: string = 'needResourcesOptions';
 
     public static META_IS_GET_USER_INFO: string = 'isGetUserInfo';
     public static META_IS_SKIP_VALIDATION: string = 'isSkipValidation';
@@ -71,23 +74,26 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
     // --------------------------------------------------------------------------
 
     protected async validateRole(context: ExecutionContext, request: B, token: T): Promise<void> {
-        let options = this.reflector.getAllAndOverride<IOpenIdRoleValidationOptions>(OpenIdGuard.META_ROLE, [context.getClass(), context.getHandler()]);
+        let targets = [context.getClass(), context.getHandler()];
+        let options = this.reflector.getAllAndOverride<IOpenIdRoleValidationOptions>(OpenIdGuard.META_VALIDATE_ROLE, targets);
         if (!_.isNil(options)) {
             await this.service.validateRole(token.value, options)
         }
     }
 
     protected async validateResource(context: ExecutionContext, request: B, token: T): Promise<void> {
-        let name = this.reflector.getAllAndOverride<string>(OpenIdGuard.META_RESOURCE, [context.getClass(), context.getHandler()]);
+        let targets = [context.getClass(), context.getHandler()];
+        let name = this.reflector.getAllAndOverride<string>(OpenIdGuard.META_VALIDATE_RESOURCE, targets);
         if (_.isNil(name)) {
             return;
         }
-        let scope = this.reflector.getAllAndMerge<Array<string>>(OpenIdGuard.META_RESOURCE_SCOPE, [context.getClass(), context.getHandler()]);
+        let scope = this.reflector.getAllAndMerge<Array<string>>(OpenIdGuard.META_VALIDATE_RESOURCE_SCOPE, targets);
         await this.service.validateResource(token.value, { name, scope });
     }
 
     protected async validateToken(context: ExecutionContext, bearer: B, token: T): Promise<void> {
-        let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, [context.getClass(), context.getHandler()]);
+        let targets = [context.getClass(), context.getHandler()];
+        let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, targets);
         await this.service.validateToken(token.value, options);
     }
 
@@ -98,8 +104,15 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
     }
 
     protected async getUserInfo<R>(context: ExecutionContext, bearer: B, token: T): Promise<U> {
-        let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, [context.getClass(), context.getHandler()]);
+        let targets = [context.getClass(), context.getHandler()];
+        let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, targets);
         return this.service.getUserInfo<U>(token.value, !_.isNil(options));
+    }
+
+    protected async getResources(context: ExecutionContext, bearer: B, token: T): Promise<OpenIdResources> {
+        let targets = [context.getClass(), context.getHandler()];
+        let options = this.reflector.getAllAndOverride<OpenIdResourceValidationOptions>(OpenIdGuard.META_NEED_RESOURCES_OPTIONS, targets);
+        return this.service.getResources(token.value, options);
     }
 
     // --------------------------------------------------------------------------
@@ -109,7 +122,8 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
     // --------------------------------------------------------------------------
 
     public async canActivate(context: ExecutionContext): Promise<boolean> {
-        let isSkipValidation = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_SKIP_VALIDATION, [context.getClass(), context.getHandler()]);
+        let targets = [context.getClass(), context.getHandler()];
+        let isSkipValidation = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_SKIP_VALIDATION, targets);
         let request = context.switchToHttp().getRequest();
 
         let token: T = null;
@@ -129,10 +143,16 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
         await this.validateRole(context, request, token);
         await this.validateResource(context, request, token);
 
-        let isGetUserInfo = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_GET_USER_INFO, [context.getClass(), context.getHandler()]);
+        let isGetUserInfo = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_GET_USER_INFO, targets);
         if (isGetUserInfo) {
             request.user = await this.getUserInfo(context, request, token);
         }
+
+        let isNeedResources = this.reflector.getAllAndOverride<boolean>(OpenIdGuard.META_IS_NEED_RESOURCES, targets);
+        if (isNeedResources) {
+            request.resources = await this.getResources(context, request, token);
+        }
+
         await this.validationComplete(context, request, token);
         return true;
     }
