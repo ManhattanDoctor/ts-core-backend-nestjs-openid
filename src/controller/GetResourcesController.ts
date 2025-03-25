@@ -1,6 +1,6 @@
 
 import { Body, Controller, Post } from '@nestjs/common';
-import { IOpenIdResource, OpenIdService, OpenIdResourceValidationOptions } from '@ts-core/openid-common';
+import { IOpenIdResource, OpenIdService, OpenIdResourceValidationOptions, IOpenIdTokenClaim } from '@ts-core/openid-common';
 import { GET_RESOURCES_URL } from '../service/proxy';
 import * as _ from 'lodash';
 
@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 
 interface IGetResourcesDto {
     token: string;
+    claim?: IOpenIdTokenClaim;
     options?: OpenIdResourceValidationOptions;
 }
 
@@ -39,7 +40,7 @@ export class GetResourcesController {
 
     @Post()
     public async execute(@Body() params: IGetResourcesDto): Promise<Array<IOpenIdResource>> {
-        let item = await this.service.getResources(params.token, params.options);
+        let item = await this.service.getResources(params.token, params.options, params.claim);
         return Array.from(item.values());
     }
 }

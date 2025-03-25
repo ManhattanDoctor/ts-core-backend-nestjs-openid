@@ -1,5 +1,5 @@
 import { isAxiosError, parseAxiosError } from '@ts-core/common';
-import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdResource, IOpenIdRoleValidationOptions, IOpenIdTokenRefreshable, IOpenIdUser, OpenIdResources, OpenIdResourceValidationOptions } from '@ts-core/openid-common';
+import { IOpenIdCode, IOpenIdOfflineValidationOptions, IOpenIdResource, IOpenIdRoleValidationOptions, IOpenIdTokenClaim, IOpenIdTokenRefreshable, IOpenIdUser, OpenIdResources, OpenIdResourceValidationOptions } from '@ts-core/openid-common';
 import axios from 'axios';
 import * as _ from 'lodash';
 
@@ -66,8 +66,8 @@ export class OpenIdProxyClient {
         return this.post<T>(`${GET_TOKEN_BY_REFRESH_TOKEN_URL}/${token}`);
     }
 
-    public async getResources(token: string, options?: OpenIdResourceValidationOptions): Promise<OpenIdResources> {
-        let items = await this.post<Array<IOpenIdResource>>(GET_RESOURCES_URL, { token, options });
+    public async getResources(token: string, options?: OpenIdResourceValidationOptions, claim?: IOpenIdTokenClaim): Promise<OpenIdResources> {
+        let items = await this.post<Array<IOpenIdResource>>(GET_RESOURCES_URL, { token, options, claim });
         let map = new Map();
         items.forEach(item => map.set(item.name, item));
         return map;
