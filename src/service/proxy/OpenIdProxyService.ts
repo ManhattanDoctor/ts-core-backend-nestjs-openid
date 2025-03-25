@@ -1,5 +1,5 @@
 import { OpenIdProxyClient } from './OpenIdProxyClient';
-import { IOpenIdOfflineValidationOptions, IOpenIdResourceScopePermissionOptions, OpenIdResourceValidationOptions, IOpenIdRolePermissionOptions, IOpenIdRoleValidationOptions, IOpenIdCode, IOpenIdTokenRefreshable, IOpenIdUser, OpenIdService, OpenIdResources, IOpenIdTokenClaim } from '@ts-core/openid-common';
+import { IOpenIdOfflineValidationOptions, IOpenIdResourceScopePermissionOptions, OpenIdResourceValidationOptions, IOpenIdRolePermissionOptions, IOpenIdRoleValidationOptions, IOpenIdCode, IOpenIdTokenRefreshable, IOpenIdUser, OpenIdService, OpenIdResources, IOpenIdClaim } from '@ts-core/openid-common';
 import * as _ from 'lodash';
 
 export class OpenIdProxyService extends OpenIdService {
@@ -71,7 +71,7 @@ export class OpenIdProxyService extends OpenIdService {
         return this.client(token).getUserInfo();
     }
 
-    public async getResources(token: string, options?: OpenIdResourceValidationOptions, claim?: IOpenIdTokenClaim): Promise<OpenIdResources> {
+    public async getResources(token: string, options?: OpenIdResourceValidationOptions, claim?: IOpenIdClaim): Promise<OpenIdResources> {
         return this.client(token).getResources(token, options, claim);
     }
 
