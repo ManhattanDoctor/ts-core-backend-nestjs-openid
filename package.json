@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/backend-nestjs-openid",
-    "version": "10.1.21",
+    "version": "11.0.0",
     "description": "Classes for NestJS OpenId",
     "scripts": {},
     "author": {
@@ -17,9 +17,9 @@
     },
     "license": "ISC",
     "dependencies": {
-        "@nestjs/swagger": "^7.1.15",
-        "@ts-core/openid-common": "~1.0.38",
-        "@ts-core/backend-nestjs": "~10.0.6"
+        "@nestjs/swagger": "^11.2.0",
+        "@ts-core/openid-common": "~1.0.43",
+        "@ts-core/backend-nestjs": "~11.0.1"
     },
     "devDependencies": {
         "gulp-npm-module-publisher": "^3.0.5"
