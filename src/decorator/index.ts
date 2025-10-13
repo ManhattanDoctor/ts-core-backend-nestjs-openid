@@ -7,4 +7,5 @@ export * from './OpenIdOfflineValidation';
 export * from './OpenIdResource';
 export * from './OpenIdResourceScope';
 export * from './OpenIdNeedResources';
+export * from './OpenIdResourcePermission';
 

@@ -16,6 +16,7 @@ export * from './decorator/OpenIdResourceScope';
 export * from './decorator/OpenIdRole';
 export * from './decorator/OpenIdGetUserInfo';
 export * from './decorator/OpenIdNeedResources';
+export * from './decorator/OpenIdResourcePermission';
 //
 export * from './error/OpenIdErrorFilter';
 export * from './error/OpenIdRequestErrorFilter';
