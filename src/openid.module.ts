@@ -27,7 +27,7 @@ export class OpenIdModule {
             case OpenIdType.KEYCLOAK:
                 providers.push({
                     provide: OpenIdService,
-                    useFactory: () => new KeycloakService(settings.settings as IKeycloakSettings)
+                    useFactory: () => new KeycloakService(settings.settings)
                 });
                 break;
             default:
