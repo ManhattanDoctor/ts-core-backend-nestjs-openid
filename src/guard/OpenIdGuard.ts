@@ -99,22 +99,6 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
 
     protected async validationComplete(context: ExecutionContext, bearer: B, token: T): Promise<void> { }
 
-    protected async getToken(context: ExecutionContext, bearer: B, value: string): Promise<T> {
-        return { value } as T;
-    }
-
-    protected async getUserInfo<R>(context: ExecutionContext, bearer: B, token: T): Promise<U> {
-        let targets = [context.getClass(), context.getHandler()];
-        let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, targets);
-        return this.service.getUserInfo<U>(token.value, !_.isNil(options));
-    }
-
-    protected async getResources(context: ExecutionContext, bearer: B, token: T): Promise<OpenIdResources> {
-        let targets = [context.getClass(), context.getHandler()];
-        let options = this.reflector.getAllAndOverride<OpenIdResourceValidationOptions>(OpenIdGuard.META_NEED_RESOURCES_OPTIONS, targets);
-        return this.service.getResources(token.value, options);
-    }
-
     // --------------------------------------------------------------------------
     //
     //  Public Methods
@@ -155,6 +139,22 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
 
         await this.validationComplete(context, request, token);
         return true;
+    }
+
+    public async getToken(context: ExecutionContext, bearer: B, value: string): Promise<T> {
+        return { value } as T;
+    }
+
+    public async getUserInfo<R>(context: ExecutionContext, bearer: B, token: T): Promise<U> {
+        let targets = [context.getClass(), context.getHandler()];
+        let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, targets);
+        return this.service.getUserInfo<U>(token.value, !_.isNil(options));
+    }
+
+    public async getResources(context: ExecutionContext, bearer: B, token: T): Promise<OpenIdResources> {
+        let targets = [context.getClass(), context.getHandler()];
+        let options = this.reflector.getAllAndOverride<OpenIdResourceValidationOptions>(OpenIdGuard.META_NEED_RESOURCES_OPTIONS, targets);
+        return this.service.getResources(token.value, options);
     }
 
     public destroy(): void {
