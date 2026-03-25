@@ -1,7 +1,7 @@
 import { IDestroyable } from '@ts-core/common';
 import { ExecutionContext, CanActivate, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser, OpenIdResources, OpenIdResourceValidationOptions, OpenIdService } from '@ts-core/openid-common';
+import { IOpenIdClaim, IOpenIdOfflineValidationOptions, IOpenIdRoleValidationOptions, IOpenIdToken, IOpenIdUser, OpenIdResources, OpenIdResourceValidationOptions, OpenIdService } from '@ts-core/openid-common';
 import { OpenIdRequestHeaderUndefinedError, OpenIdRequestUndefinedError } from '../error';
 import { IOpenIdBearer } from './IOpenIdBearer';
 import * as _ from 'lodash';
@@ -47,6 +47,27 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
         return array[0].toLowerCase() === 'bearer' ? array[1] : null;
     }
 
+
+    public static async getUserInfo<U extends IOpenIdUser>(service: OpenIdService, token: string, options?: IOpenIdOfflineValidationOptions): Promise<U> {
+        return service.getUserInfo<U>(token, !_.isNil(options));
+    }
+
+    public static async getResources(service: OpenIdService, token: string, options?: OpenIdResourceValidationOptions, claim?: IOpenIdClaim): Promise<OpenIdResources> {
+        return service.getResources(token, options, claim);
+    }
+
+    public static async validateRole(service: OpenIdService, token: string, options: IOpenIdRoleValidationOptions): Promise<void> {
+        return service.validateRole(token, options);
+    }
+
+    public static async validateToken(service: OpenIdService, token: string, options?: IOpenIdOfflineValidationOptions): Promise<void> {
+        return service.validateToken(token, options);
+    }
+
+    public static async validateResource(service: OpenIdService, token: string, options: OpenIdResourceValidationOptions): Promise<void> {
+        return service.validateResource(token, options);
+    }
+
     // --------------------------------------------------------------------------
     //
     //  Properties
@@ -77,7 +98,7 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
         let targets = [context.getClass(), context.getHandler()];
         let options = this.reflector.getAllAndOverride<IOpenIdRoleValidationOptions>(OpenIdGuard.META_VALIDATE_ROLE, targets);
         if (!_.isNil(options)) {
-            await this.service.validateRole(token.value, options)
+            return OpenIdGuard.validateRole(this.service, token.value, options);
         }
     }
 
@@ -88,13 +109,13 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
             return;
         }
         let scope = this.reflector.getAllAndMerge<Array<string>>(OpenIdGuard.META_VALIDATE_RESOURCE_SCOPE, targets);
-        await this.service.validateResource(token.value, { name, scope });
+        return OpenIdGuard.validateResource(this.service, token.value, { name, scope });
     }
 
     protected async validateToken(context: ExecutionContext, bearer: B, token: T): Promise<void> {
         let targets = [context.getClass(), context.getHandler()];
         let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, targets);
-        await this.service.validateToken(token.value, options);
+        return OpenIdGuard.validateToken(this.service, token.value, options);
     }
 
     protected async validationComplete(context: ExecutionContext, bearer: B, token: T): Promise<void> { }
@@ -145,16 +166,16 @@ export class OpenIdGuard<B extends IOpenIdBearer<T, U>, T extends IOpenIdToken =
         return { value } as T;
     }
 
-    public async getUserInfo<R>(context: ExecutionContext, bearer: B, token: T): Promise<U> {
+    public async getUserInfo(context: ExecutionContext, bearer: B, token: T): Promise<U> {
         let targets = [context.getClass(), context.getHandler()];
         let options = this.reflector.getAllAndOverride<IOpenIdOfflineValidationOptions>(OpenIdGuard.META_OFFLINE_VALIDATION_OPTIONS, targets);
-        return this.service.getUserInfo<U>(token.value, !_.isNil(options));
+        return OpenIdGuard.getUserInfo<U>(this.service, token.value, options);
     }
 
     public async getResources(context: ExecutionContext, bearer: B, token: T): Promise<OpenIdResources> {
         let targets = [context.getClass(), context.getHandler()];
         let options = this.reflector.getAllAndOverride<OpenIdResourceValidationOptions>(OpenIdGuard.META_NEED_RESOURCES_OPTIONS, targets);
-        return this.service.getResources(token.value, options);
+        return OpenIdGuard.getResources(this.service, token.value, options);
     }
 
     public destroy(): void {
