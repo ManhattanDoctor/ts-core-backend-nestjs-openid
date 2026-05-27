@@ -31,6 +31,6 @@ export class OpenIdRequestUndefinedError extends OpenIdRequestError {
 }
 export class OpenIdRequestHeaderUndefinedError extends OpenIdRequestError {
     constructor() {
-        super(OpenIdRequestErrorCode.REQUEST_HEADER_UNDEFINED);
+        super(OpenIdRequestErrorCode.REQUEST_HEADER_UNDEFINED, ExtendedError.HTTP_CODE_UNAUTHORIZED);
     }
 }

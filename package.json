@@ -18,7 +18,7 @@
     "license": "ISC",
     "dependencies": {
         "@nestjs/swagger": "^11.2.0",
-        "@ts-core/openid-common": "~1.0.47",
+        "@ts-core/openid-common": "~1.0.52",
         "@ts-core/backend-nestjs": "~11.0.1"
     },
     "devDependencies": {
