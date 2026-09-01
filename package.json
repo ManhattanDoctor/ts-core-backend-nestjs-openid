@@ -1,7 +1,7 @@
 {
     "name": "@ts-core/backend-nestjs-openid",
     "version": "11.0.5",
-    "description": "Classes for NestJS OpenId",
+    "description": "OpenID Connect and JWT authentication for NestJS applications: guards, decorators, token validation and resource-based authorization with Keycloak support",
     "scripts": {},
     "author": {
         "name": "Renat Gubaev",
@@ -29,7 +29,19 @@
         "url": "git+https://github.com/ManhattanDoctor/ts-core-backend-nestjs-openid.git"
     },
     "keywords": [
-        "typescript"
+        "typescript",
+        "nestjs",
+        "openid",
+        "openid-connect",
+        "oidc",
+        "keycloak",
+        "jwt",
+        "authentication",
+        "authorization",
+        "guard",
+        "rbac",
+        "security",
+        "sso"
     ],
     "bugs": {
         "url": "https://github.com/ManhattanDoctor/ts-core-backend-nestjs-openid/issues"
